@@ -1,16 +1,9 @@
-import logging
-import os
-
-from pydantic import BaseSettings, Field
+from pydantic import BaseSettings, Field, Required
 
 
 class BaseConfig(BaseSettings):
     class Config:
         env_file = ".env"
-
-
-class BaseSettings(BaseConfig):
-    project_name: str = Field(default="notifications", env="PROJECT_NAME")
 
 
 class LoggerSettings(BaseConfig):
@@ -22,14 +15,18 @@ class LoggerSettings(BaseConfig):
     default_handlers: list = ["console"]
 
 
-class NotificationSettings(BaseConfig):
-    notif_db_host: str = Field(default="127.0.0.1", env="NOTIF_POSTGRES_HOST")
-    notif_db_port: str = Field(default="5432", env="NOTIF_POSTGRES_PORT")
-    notif_db_name: str = Field(default="5432", env="NOTIF_POSTGRES_NAME")
-    notif_db_user: str = Field(default="5432", env="NOTIF_POSTGRES_USER")
-    notif_db_password: str = Field(default="5432", env="NOTIF_POSTGRES_PASSWORD")
+class ProjectSettings(BaseConfig):
+    project_name: str = Field(default="notifications", env="PROJECT_NAME")
+
+
+class RabbitMQSettings(BaseConfig):
+    username: str = Field(Required, env="RABBITMQ_USER")
+    password: str = Field(Required, env="RABBITMQ_PASS")
+    host: str = Field("127.0.0.1", env="RABBITMQ_HOST")
+    port: int = Field(default=5672, env="RABBITMQ_PORT")
 
 
 base_settings = BaseSettings()
 logger_settings = LoggerSettings()
-notification_settings = NotificationSettings()
+project_settings = ProjectSettings()
+rabbitmq_settings = RabbitMQSettings()
