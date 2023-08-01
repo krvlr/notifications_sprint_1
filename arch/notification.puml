@@ -1,0 +1,48 @@
+@startuml
+skinparam componentStyle uml2
+skinparam PackageBackgroundColor #bfffc0
+actor Клиент as Client #Blue
+actor Менеджер as Manager #Red
+
+component NGINX #LightGrey
+
+
+component Admin_django
+
+
+component Auth_API
+component UGC
+component Scheduler
+
+queue "RabbitMQ" as Rabbit {
+component email_queue
+component websocket_queue
+}
+
+database "PostgreSQL" as notification_postgres{
+component " Таблицы:\n Шаблоны отправки email \n История сообщений \n Расписание заданий" as Table
+}
+component "Worker\nMail" as WorkerMail
+component "Worker\nWebsocket" as WorkerWebsocket
+package NOTIFICATION_API {
+component " FastApi_Notification\n Сервис регистрации событий в БД" as FastApi_Notification
+
+}
+
+NGINX<-->NOTIFICATION_API
+Auth_API-->FastApi_Notification: Событие о регистрации
+UGC-->FastApi_Notification: "Событие \nЛайк комментария"
+NOTIFICATION_API-->Rabbit: "Отправляет\n задания в очередь"
+Table<-up->FastApi_Notification
+Manager-->Admin_django
+Admin_django-->FastApi_Notification: Шаблоны email
+
+
+WorkerMail-->email_queue:Забирает задания
+WorkerWebsocket-->websocket_queue:Забирает задания
+WorkerMail-up->Client:Отправка email
+WorkerWebsocket-up->Client:Отправка websocket
+
+Scheduler<-up->Table: Забирает расписание заданий
+Scheduler-->Rabbit: Отправляет задание в очередь
+@enduml
