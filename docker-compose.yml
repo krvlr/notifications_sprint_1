@@ -2,6 +2,7 @@ version: '3'
 
 volumes:
   notif_postgres_data:
+  static_value:
 
 networks:
   notification_network:
@@ -15,6 +16,8 @@ services:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
     volumes:
       - notif_postgres_data:/var/lib/postgresql/data/
     networks:
@@ -38,6 +41,21 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
+    env_file:
+      - .env
+    networks:
+      - notification_network
+    expose:
+      - "8000"
+
+  notification-admin:
+    build:
+      context: ./notification_admin
+      dockerfile: Dockerfile
+    container_name: notification_admin
+    restart: always
+    volumes:
+      - ./static:/opt/app/static
     env_file:
       - .env
     networks:
