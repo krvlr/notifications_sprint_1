@@ -1,5 +1,3 @@
-"""Django settings for config project."""
-
 import os
 from pathlib import Path
 
@@ -21,9 +19,11 @@ include(
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', default=1)
 
 DEBUG = os.environ.get('DEBUG', False) == 'True'
+
+CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:8080", "http://127.0.0.1:80", "http://127.0.0.1:8000"]
 
 ROOT_URLCONF = 'config.urls'
 
@@ -38,6 +38,11 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATIC_ROOT = './static'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

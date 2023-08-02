@@ -1,5 +1,3 @@
-"""TEMPLATES для модуля settings."""
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

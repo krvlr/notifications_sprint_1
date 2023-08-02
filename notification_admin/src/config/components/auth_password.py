@@ -1,5 +1,3 @@
-"""Password validation для модуля Settings."""
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',

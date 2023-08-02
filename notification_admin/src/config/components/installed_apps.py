@@ -1,6 +1,7 @@
-"""Application definition для модуля settings."""
-
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -10,4 +11,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'notification.apps.NotificationConfig',
+    'corsheaders',
 ]
+
+if os.environ.get('DEBUG', False) == 'True':
+    INSTALLED_APPS += (
+        'debug_toolbar',
+    )

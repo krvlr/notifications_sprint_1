@@ -1,14 +1,21 @@
-"""Модуль для визуализиции таблиц БД в админ панели."""
-
 from django.contrib import admin
-from notification.models import Task, Template
+from notification import models
 
 
-@admin.register(Template)
-class TemplateAdmin(admin.ModelAdmin):
-    """Класс для отображения таблицы Template."""
+@admin.register(models.Template)
+class Templates(admin.ModelAdmin):
+
+    search_fields = ['name']
 
 
-@admin.register(Task)
-class TaskAdmin(admin.ModelAdmin):
-    """Класс для отображения таблицы Task."""
+@admin.register(models.Schedule)
+class Schedules(admin.ModelAdmin):
+
+    search_fields = ['name']
+
+
+@admin.register(models.Configuration)
+class Configs(admin.ModelAdmin):
+
+    search_fields = ['name']
+

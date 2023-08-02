@@ -1,12 +1,5 @@
-"""ALLOWED_HOSTS для модуля Settings."""
-
-
 import os
+from dotenv import load_dotenv
 
-allowed_host = os.environ.get('ALLOWED_HOSTS')
-if not allowed_host:
-    allowed_host = ''
-
-ALLOWED_HOSTS = [
-    host.strip() for host in allowed_host.split(',')
-]
+load_dotenv()
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', default='localhost,127.0.0.1,[::1]').split(',')
