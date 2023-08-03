@@ -29,6 +29,8 @@ ROOT_URLCONF = 'config.urls'
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+LOCALE_PATHS = ['notification/locale']
+
 LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'

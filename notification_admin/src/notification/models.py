@@ -1,14 +1,12 @@
 import uuid
 
 from django.db import models
-
-
-# TODO add translation!
+from django.utils.translation import gettext_lazy as _
 
 
 class TimeStampedMixin(models.Model):
-    created = models.DateTimeField('created', auto_now_add=True)
-    modified = models.DateTimeField('modified', auto_now=True)
+    created = models.DateTimeField(_('created'), auto_now_add=True)
+    modified = models.DateTimeField(_('modified'), auto_now=True)
 
     class Meta:
         abstract = True
@@ -22,82 +20,92 @@ class UUIDMixin(models.Model):
 
 
 class TransportType(models.TextChoices):
-    email = 'email',
-    websocket = 'websocket'
-    sms = 'sms'
+    email = 'email', _('email')
+    websocket = 'websocket', _('websocket')
+    sms = 'sms', _('sms')
 
 
 class Group(models.TextChoices):
-    subscribers = 'subscribers', 'Отправить подписчикам'
-    everyone = 'everyone', 'Отправить всем'
+    subscribers = 'subscribers', _('subscribers')
+    everyone = 'everyone', _('everyone')
 
 
 class Timing(models.TextChoices):
-    one = 'one', 'Один раз'
-    week = 'week', 'Раз в неделю'
-    month = 'month', 'Раз в месяц'
+    one = 'one', _('one')
+    week = 'week', _('week')
+    month = 'month', _('month')
 
 
 class Priority(models.TextChoices):
-    high = 'high', 'Высокий приоритет'
-    medium = 'medium', 'Средний приоритет'
-    low = 'low', 'Низкий приоритет'
+    high = 'high', _('high')
+    medium = 'medium', _('medium')
+    low = 'low', _('low')
 
 
 class Task(models.TextChoices):
-    review_rated = 'review-reporting.v1.rated'
-    user_registered = 'user-reporting.v1.registered'
-    admin = 'admin-reporting.v1.event'
+    set_rating = 'set_rating'
+    user_registered = 'user_registered'
+    mass_sending = 'mass_sending'
 
 
 class Template(UUIDMixin, TimeStampedMixin):
-    name = models.CharField('name', max_length=255)
-    description = models.TextField('description', blank=True, null=True)
-    channel = models.CharField(
+    name = models.CharField(_('name'), max_length=255)
+    description = models.TextField(_('description'), blank=True, null=True)
+    transport_type = models.CharField(
+        _('transport_type'),
         choices=TransportType.choices,
         max_length=100,
     )
     task = models.CharField(
+        _('task'),
         choices=Task.choices,
         max_length=100,
     )
-    theme = models.TextField(blank=True, null=True)
-    template = models.TextField()
+    theme = models.TextField(_('theme'), blank=True, null=True)
+    template_body = models.TextField(_('template_body'))
 
     class Meta:
         db_table = 'notification\".\"templates'
+        verbose_name = _('template')
+        verbose_name_plural = _('templates')
 
     def __str__(self):
         return self.name
 
 
 class Schedule(UUIDMixin, TimeStampedMixin):
-    name = models.CharField('name', max_length=255)
-    description = models.TextField('description', blank=True, null=True)
-    template = models.ForeignKey(Template, on_delete=models.CASCADE)
+    name = models.CharField(_('name'), max_length=255)
+    description = models.TextField(_('description'), blank=True, null=True)
+    template = models.ForeignKey(Template, on_delete=models.CASCADE, verbose_name=_('template_schedule'))
     template_params = models.TextField(
-        'template_params',
+        _('template_params'),
         blank=True,
         null=True,
     )
     group = models.CharField(
+        _('group'),
         choices=Group.choices,
-        max_length=50,
+        max_length=100,
     )
-    is_instant = models.BooleanField()
-    next_planned_date = models.DateTimeField(blank=True, null=True)
+
     timing = models.CharField(
+        _('timing'),
         choices=Timing.choices,
-        max_length=50,
+        max_length=100,
     )
     priority = models.CharField(
+        _('priority'),
         choices=Priority.choices,
-        max_length=50,
+        max_length=100,
     )
-    last_processed_date = models.DateTimeField(blank=True, null=True)
+    last_date = models.DateTimeField(_('last_date'), blank=True, null=True)
+    planned_date = models.DateTimeField(_('planned_date'), blank=True, null=True)
+    urgent = models.BooleanField(_('urgent'))
 
     class Meta:
         db_table = 'notification\".\"schedules'
+        verbose_name = _('schedule')
+        verbose_name_plural = _('schedules')
 
     def __str__(self):
         return self.name
@@ -106,7 +114,9 @@ class Schedule(UUIDMixin, TimeStampedMixin):
 class Configuration(UUIDMixin):
     class Meta:
         db_table = 'notification\".\"configs'
+        verbose_name = _('config')
+        verbose_name_plural = _('configs')
 
-    name = models.SlugField('name', max_length=255)
-    description = models.TextField('description', blank=True, null=True)
-    value = models.CharField('value', max_length=255)
+    name = models.SlugField(_('name'), max_length=255)
+    description = models.TextField(_('description'), blank=True, null=True)
+    value = models.CharField(_('value'), max_length=255)
