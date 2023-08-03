@@ -18,4 +18,3 @@ class Schedules(admin.ModelAdmin):
 class Configs(admin.ModelAdmin):
 
     search_fields = ['name', 'description', 'id']
-

@@ -19,7 +19,7 @@ include(
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('SECRET_KEY', default=1)
+SECRET_KEY = os.environ.get('SECRET_KEY', '1')
 
 DEBUG = os.environ.get('DEBUG', False) == 'True'
 
