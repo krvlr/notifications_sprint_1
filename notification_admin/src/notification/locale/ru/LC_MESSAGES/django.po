@@ -1,0 +1,165 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-08-03 16:57+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: .\notification\apps.py:8
+msgid "notifications"
+msgstr "Система оповещений"
+
+#: .\notification\models.py:10
+msgid "created"
+msgstr "Дата создания"
+
+#: .\notification\models.py:11
+msgid "modified"
+msgstr "Дата последнего изменения"
+
+#: .\notification\models.py:25
+msgid "email"
+msgstr "Отправка через email"
+
+#: .\notification\models.py:26
+msgid "websocket"
+msgstr "Отправка через websocket"
+
+#: .\notification\models.py:27
+msgid "sms"
+msgstr "Отправка через sms"
+
+#: .\notification\models.py:31
+msgid "subscribers"
+msgstr "Отправить подписчикам"
+
+#: .\notification\models.py:32
+msgid "everyone"
+msgstr "Отправить всем"
+
+#: .\notification\models.py:36
+msgid "one"
+msgstr "Один раз"
+
+#: .\notification\models.py:37
+msgid "week"
+msgstr "Раз в неделю"
+
+#: .\notification\models.py:38
+msgid "month"
+msgstr "Раз в месяц"
+
+#: .\notification\models.py:42
+msgid "high"
+msgstr "Высокий приоритет"
+
+#: .\notification\models.py:43
+msgid "medium"
+msgstr "Средний приоритет"
+
+#: .\notification\models.py:44
+msgid "low"
+msgstr "Низкий приоритет"
+
+#: .\notification\models.py:54 .\notification\models.py:79
+#: .\notification\models.py:122
+msgid "name"
+msgstr "Название"
+
+#: .\notification\models.py:55 .\notification\models.py:80
+#: .\notification\models.py:123
+msgid "description"
+msgstr "Описание"
+
+#: .\notification\models.py:57
+msgid "transport_type"
+msgstr "Способ отправки"
+
+#: .\notification\models.py:62
+msgid "task"
+msgstr "Задача"
+
+#: .\notification\models.py:66
+msgid "theme"
+msgstr "Тема сообщения"
+
+#: .\notification\models.py:67
+msgid "template_body"
+msgstr "Тело шаблона"
+
+#: .\notification\models.py:71
+msgid "template"
+msgstr "Шаблон"
+
+#: .\notification\models.py:72
+msgid "templates"
+msgstr "Шаблоны"
+
+#: .\notification\models.py:81
+#, fuzzy
+#| msgid "templates"
+msgid "template_schedule"
+msgstr "Шаблон"
+
+#: .\notification\models.py:83
+msgid "template_params"
+msgstr "Параметры шаблона"
+
+#: .\notification\models.py:88
+msgid "group"
+msgstr "Группа"
+
+#: .\notification\models.py:94
+msgid "timing"
+msgstr "График отправки"
+
+#: .\notification\models.py:99
+msgid "priority"
+msgstr "Приоритет отправки"
+
+#: .\notification\models.py:103
+msgid "last_date"
+msgstr "Последняя дата отправки"
+
+#: .\notification\models.py:104
+msgid "planned_date"
+msgstr "Запланированная дата отправки"
+
+#: .\notification\models.py:105
+msgid "urgent"
+msgstr "Незамедлительная отправка"
+
+#: .\notification\models.py:109
+msgid "schedule"
+msgstr "Расписание"
+
+#: .\notification\models.py:110
+msgid "schedules"
+msgstr "Расписания"
+
+#: .\notification\models.py:119
+msgid "config"
+msgstr "Конфигурация"
+
+#: .\notification\models.py:120
+msgid "configs"
+msgstr "Конфигурации"
+
+#: .\notification\models.py:124
+msgid "value"
+msgstr "Значение"

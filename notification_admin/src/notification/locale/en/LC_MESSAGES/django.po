@@ -1,0 +1,163 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-08-03 16:57+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\notification\apps.py:8
+msgid "notifications"
+msgstr "notifications"
+
+#: .\notification\models.py:10
+msgid "created"
+msgstr "created"
+
+#: .\notification\models.py:11
+msgid "modified"
+msgstr "modified"
+
+#: .\notification\models.py:25
+msgid "email"
+msgstr "email"
+
+#: .\notification\models.py:26
+msgid "websocket"
+msgstr "websocket"
+
+#: .\notification\models.py:27
+msgid "sms"
+msgstr "sms"
+
+#: .\notification\models.py:31
+msgid "subscribers"
+msgstr "subscribers"
+
+#: .\notification\models.py:32
+msgid "everyone"
+msgstr "everyone"
+
+#: .\notification\models.py:36
+msgid "one"
+msgstr "one"
+
+#: .\notification\models.py:37
+msgid "week"
+msgstr "week"
+
+#: .\notification\models.py:38
+msgid "month"
+msgstr "month"
+
+#: .\notification\models.py:42
+msgid "high"
+msgstr "high"
+
+#: .\notification\models.py:43
+msgid "medium"
+msgstr "medium"
+
+#: .\notification\models.py:44
+msgid "low"
+msgstr "low"
+
+#: .\notification\models.py:54 .\notification\models.py:79
+#: .\notification\models.py:122
+msgid "name"
+msgstr "name"
+
+#: .\notification\models.py:55 .\notification\models.py:80
+#: .\notification\models.py:123
+msgid "description"
+msgstr "description"
+
+#: .\notification\models.py:57
+msgid "transport_type"
+msgstr "transport_type"
+
+#: .\notification\models.py:62
+msgid "task"
+msgstr "task"
+
+#: .\notification\models.py:66
+msgid "theme"
+msgstr "theme"
+
+#: .\notification\models.py:67
+msgid "template_body"
+msgstr "template_body"
+
+#: .\notification\models.py:71
+msgid "template"
+msgstr "template"
+
+#: .\notification\models.py:72
+msgid "templates"
+msgstr "templates"
+
+#: .\notification\models.py:81
+#, fuzzy
+#| msgid "templates"
+msgid "template_schedule"
+msgstr "template"
+
+#: .\notification\models.py:83
+msgid "template_params"
+msgstr "template_params"
+
+#: .\notification\models.py:88
+msgid "group"
+msgstr "group"
+
+#: .\notification\models.py:94
+msgid "timing"
+msgstr "timing"
+
+#: .\notification\models.py:99
+msgid "priority"
+msgstr "priority"
+
+#: .\notification\models.py:103
+msgid "last_date"
+msgstr "last date updated"
+
+#: .\notification\models.py:104
+msgid "planned_date"
+msgstr "planned date"
+
+#: .\notification\models.py:105
+msgid "urgent"
+msgstr "urgent"
+
+#: .\notification\models.py:109
+msgid "schedule"
+msgstr "schedule"
+
+#: .\notification\models.py:110
+msgid "schedules"
+msgstr "schedules"
+
+#: .\notification\models.py:119
+msgid "config"
+msgstr "config"
+
+#: .\notification\models.py:120
+msgid "configs"
+msgstr "configs"
+
+#: .\notification\models.py:124
+msgid "value"
+msgstr "value"
