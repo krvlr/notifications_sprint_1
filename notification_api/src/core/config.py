@@ -1,7 +1,5 @@
-import logging
-import os
-
-from pydantic import BaseSettings, Field
+from pydantic import Field
+from pydantic_settings import BaseSettings
 
 
 class BaseConfig(BaseSettings):
@@ -9,27 +7,24 @@ class BaseConfig(BaseSettings):
         env_file = ".env"
 
 
-class BaseSettings(BaseConfig):
+class ProjectSettings(BaseConfig):
     project_name: str = Field(default="notifications", env="PROJECT_NAME")
 
 
 class LoggerSettings(BaseConfig):
-    debug: str = Field(default="True", env="DEBUG")
+    debug: bool = Field(default=True, env="DEBUG")
     level: str = Field(default="INFO", env="LOGGING_LEVEL")
-    format: str = Field(
-        default="%(asctime)s - %(name)s - %(levelname)s - %(message)s", env="LOG_FORMAT"
-    )
+    format: str = Field(default="%(asctime)s - %(name)s - %(levelname)s - %(message)s", env="LOG_FORMAT")
     default_handlers: list = ["console"]
 
 
-class NotificationSettings(BaseConfig):
-    notif_db_host: str = Field(default="127.0.0.1", env="NOTIF_POSTGRES_HOST")
-    notif_db_port: str = Field(default="5432", env="NOTIF_POSTGRES_PORT")
-    notif_db_name: str = Field(default="5432", env="NOTIF_POSTGRES_NAME")
-    notif_db_user: str = Field(default="5432", env="NOTIF_POSTGRES_USER")
-    notif_db_password: str = Field(default="5432", env="NOTIF_POSTGRES_PASSWORD")
+class RabbitMQSettings(BaseConfig):
+    login: str = Field(default="guest", env="RABBITMQ_DEFAULT_USER")
+    password: str = Field(default="guest", env="RABBITMQ_DEFAULT_PASS", repr=False)
+    host: str = Field(default="127.0.0.1", env="RABBITMQ_HOST")
+    port: int = Field(default=5672, env="RABBITMQ_PORT")
 
 
-base_settings = BaseSettings()
+project_settings = ProjectSettings()
 logger_settings = LoggerSettings()
-notification_settings = NotificationSettings()
+rabbitmq_settings = RabbitMQSettings()

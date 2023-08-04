@@ -50,6 +50,6 @@ jobs:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            ${{github.repository}}: Pipeline for user "${{ github.actor }}" commit "${{ github.event.commits[0].message }}" 
+            ${{ github.repository }}: Pipeline for user "${{ github.actor }}" commit "${{ github.event.commits[0].message }}" 
             ${{ contains(join(needs.*.result, ','), 'success') && 'finished successfully' || 'failed' }}
-            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+            See changes: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
