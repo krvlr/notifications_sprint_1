@@ -1,0 +1,10 @@
+aio_pika
+pydantic
+pydantic-settings==2.0.2
+orjson==3.9.2
+motor==3.2.0
+gunicorn==21.2.0
+sendgrid
+asyncio
+jinja2
+websockets

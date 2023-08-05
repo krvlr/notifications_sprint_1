@@ -64,11 +64,27 @@ services:
       - "8000"
 
 
-  notification_rabbitmq:
-    image: rabbitmq:latest
-    container_name: notification_rabbitmq
+  worker:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    container_name: worker-mail
+    restart: always
     env_file:
       - .env
+    networks:
+      - notification_network
+    expose:
+      - "8000"
+
+  notification_rabbitmq:
+    image: rabbitmq:3-management
+    container_name: notification_rabbitmq_management
+    env_file:
+      - .env
+    ports:
+      - "5672:5672"
+      - "15672:15672"
 
 
   mailhog:
@@ -76,6 +92,7 @@ services:
     container_name: notification_mailhog
     ports:
       - "8025:8025"
+      - "1025:1025"
     env_file:
       - .env
 
