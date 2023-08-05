@@ -1,8 +1,8 @@
 import aio_pika
 
+from core.config import worker_settings
 from db.rabbitmq import ConsumerRabbitMQ
-from worker.src.core.config import worker_settings
-from worker.src.db.sender import SenderEmailMailhog
+from db.sender import SenderEmailMailhog, SenderEmailSendgrid, SenderWebsocket
 
 
 async def get_queue(
@@ -16,17 +16,35 @@ async def get_queue(
     )
 
 
+senders_types = {
+    'Email': SenderEmailMailhog
+}
+
+
 async def create_consumers(
     connection: aio_pika.abc.AbstractRobustConnection,
 ):
     consumers = []
-    #low='low'+settings.consumertype
-    queue_names = ['low', 'middle', 'high']
-    for queue_name in queue_names:
-        queue = await get_queue(connection, queue_name)
-        consumers.append(ConsumerRabbitMQ(queue, 1, SenderEmailMailhog(host=worker_settings.mailhog_host,
-                                                                       port=worker_settings.mailhog_port,
-                                                                       from_email="ivan@ivan.com")))
+    # low='low'+settings.consumertype
+    routing_keys = ['low', 'middle', 'high']
+    for routing_key in routing_keys:
+        queue = await get_queue(connection, routing_key)
+
+        if worker_settings.sender_type == 'Email':
+            if worker_settings.using_mailhog:
+                sender = SenderEmailMailhog(host=worker_settings.mailhog_host,
+                                            port=worker_settings.mailhog_port,
+                                            from_email=worker_settings.from_email)
+            else:
+                sender = SenderEmailSendgrid(from_email=worker_settings.from_email)
+        elif worker_settings.sender_type == 'Websocket':
+            sender = SenderWebsocket()
+        else:
+            sender = SenderEmailMailhog(host=worker_settings.mailhog_host,
+                                        port=worker_settings.mailhog_port,
+                                        from_email=worker_settings.from_email)
+
+        consumers.append(ConsumerRabbitMQ(queue, 0, sender))
     return consumers
 
 
@@ -37,4 +55,4 @@ class Worker:
     async def run(self) -> None:
         await self.consumer.consume_c()
 
-#TODO добавить ws нормально, сделать разные сендеры в зависимости от настроек енв, генераторы писем и получение темплейтов из постгры, укорачиватель ссылоку, сервис авторизации
+# TODO добавить ws нормально, сделать разные сендеры в зависимости от настроек енв, генераторы писем и получение темплейтов из постгры, укорачиватель ссылоку, сервис авторизации

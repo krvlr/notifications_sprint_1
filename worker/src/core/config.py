@@ -1,15 +1,9 @@
-from pydantic import Field
-
+from pydantic import Field, Extra
 
 from pydantic_settings import BaseSettings
 
 
-class BaseConfig(BaseSettings):
-    class Config:
-        env_file = ".env"
-
-
-class WorkerSettings(BaseConfig):
+class WorkerSettings(BaseSettings):
     rabbit_user: str = Field(default="guest", env="RABBITMQ_USER")
     rabbit_password: str = Field(default="guest", env="RABBITMQ_PASS")
     rabbit_host: str = Field(default="localhost", env="RABBITMQ_HOST")
@@ -25,8 +19,13 @@ class WorkerSettings(BaseConfig):
     mailhog_port: int = Field(1025, env='MAILHOG_PORT')
     using_mailhog: bool = Field(True, env='USING_MAILHOG')
 
-    consumer_type: str = Field('Email', env='CONSUMER_TYPE')
-    sendgrid_key: str = Field('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', env='SENDGRID_KEY')
+    sender_type: str = Field('Email', env='CONSUMER_TYPE')
+    sendgrid_key: str = Field('', env='SENDGRID_KEY')
+    from_email: str = Field('ivan@ivan.com')
+
+    class Config:
+        extra = Extra.ignore
+        env_file = ".env"
 
 
 worker_settings = WorkerSettings()

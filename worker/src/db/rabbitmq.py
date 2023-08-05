@@ -3,8 +3,8 @@ import logging
 
 import aio_pika
 
-from worker.src.models.message import Message
-from worker.src.db.sender import SenderBase
+from models.message import Message
+from db.sender import SenderBase
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -35,9 +35,12 @@ class ConsumerRabbitMQ:
     ) -> None:
         await asyncio.sleep(self.consumption_delay)
         logger.info(message.body.decode())
-        mess = Message.model_validate_json(message.body.decode())
-        logger.info(mess)
-        await self.sender.send_message(mess)
+        try:
+            mess = Message.model_validate_json(message.body.decode())
+            logger.info(mess)
+            await self.sender.send_message(mess)
+        except:
+            logger.error(f'Validation error message {message.body.decode()}')
         await message.ack()
 
     async def consume_c(self) -> None:

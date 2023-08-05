@@ -1,11 +1,12 @@
 import json
+import logging
 import os
 import smtplib
 from abc import ABC, abstractmethod
 from typing import Any
 
-from worker.src.core.config import worker_settings
-from worker.src.models.message import Message, WSMessage
+from core.config import worker_settings
+from models.message import Message, WSMessage
 from email.message import EmailMessage
 from jinja2 import Environment, FileSystemLoader
 
@@ -13,6 +14,9 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
 import websockets
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class SenderBase(ABC):
@@ -31,6 +35,7 @@ class SenderEmailMailhog(SenderBase):
 
     def connect(self):
         if self.server is None:
+            logger.info(f'Mailhog {self.host} {str(self.port)}')
             self.server = smtplib.SMTP(self.host, self.port)
 
     async def send_message(self, mess: Message) -> None:
@@ -69,9 +74,7 @@ class SenderEmailMailhog(SenderBase):
 
 
 class SenderEmailSendgrid(SenderBase):
-    def __init__(self, host: str, port: int, from_email: str = None):
-        self.host = host
-        self.port = port
+    def __init__(self, from_email: str = None):
         self.sg = None
         self.from_email = from_email
         self.connect()
@@ -115,7 +118,6 @@ class SenderEmailSendgrid(SenderBase):
             print('Письмо отправлено Sendgrid!')
 
 
-
 class SenderWebsocket(SenderBase):
     def __init__(self, host: str, port: int, token: str, api_url: str):
         self.host = host
@@ -126,10 +128,10 @@ class SenderWebsocket(SenderBase):
     async def send_message(
         self,
         ws_mess: WSMessage
-        # username: str,
-        # text: str,
     ) -> None:
-        url = 'ws://{host}:{port}/{api}?token={token}'.format(
+        #ws_server = websockets.serve(receiver, "localhost", 8765)
+
+        url = 'ws://{host}:{port}/'.format(
             host=self.host,
             port=self.port,
             api=self.api_url,

@@ -1,3 +1,5 @@
+import logging
+
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
@@ -6,6 +8,10 @@ from api.v1 import events, admin, core
 from core.config import project_settings
 from core.logger import LOGGER_CONFIG
 from services import amqp_broker_service
+
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title=project_settings.project_name,
@@ -21,11 +27,13 @@ app.include_router(admin.router, prefix="/api/v1/admin", tags=["Панель а�
 
 @app.on_event("startup")
 async def startup():
+    logger.info('startup')
     await amqp_broker_service.connect()
 
 
 @app.on_event("shutdown")
 async def shutdown():
+    logger.info('shutdown')
     await amqp_broker_service.disconnect()
 
 
@@ -34,5 +42,5 @@ if __name__ == "__main__":
         "main:app",
         host="0.0.0.0",
         port=8000,
-        log_config=LOGGER_CONFIG,
+        log_config=LOGGER_CONFIG
     )

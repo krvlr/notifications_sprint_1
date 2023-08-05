@@ -45,6 +45,8 @@ services:
       retries: 3
     env_file:
       - .env
+    ports:
+      - "8000:8000"
     networks:
       - notification_network
     expose:
@@ -80,6 +82,8 @@ services:
       - notification_network
     expose:
       - "8000"
+    links:
+      - 'mailhog'
 
   notification_rabbitmq:
     image: rabbitmq:3-management
@@ -89,7 +93,10 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-
+    networks:
+      - notification_network
+    expose:
+      - "5672"
 
   mailhog:
     image: mailhog/mailhog:latest
@@ -99,7 +106,10 @@ services:
       - "1025:1025"
     env_file:
       - .env
-
+    networks:
+      - notification_network
+    expose:
+      - "1025"
 
 #  scheduler:
 #    build:
