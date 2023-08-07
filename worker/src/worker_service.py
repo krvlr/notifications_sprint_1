@@ -16,18 +16,12 @@ async def get_queue(
     )
 
 
-senders_types = {
-    'Email': SenderEmailMailhog
-}
-
-
 async def create_consumers(
     connection: aio_pika.abc.AbstractRobustConnection,
 ):
     consumers = []
-    # low='low'+settings.consumertype
-    routing_keys = ['low', 'middle', 'high']
-    for routing_key in routing_keys:
+
+    for routing_key in worker_settings.routing_keys:
         queue = await get_queue(connection, routing_key)
 
         if worker_settings.sender_type == 'Email':
@@ -38,7 +32,7 @@ async def create_consumers(
             else:
                 sender = SenderEmailSendgrid(from_email=worker_settings.from_email)
         elif worker_settings.sender_type == 'Websocket':
-            sender = SenderWebsocket()
+            sender = SenderWebsocket(host=worker_settings, port=worker_settings.ws_port)
         else:
             sender = SenderEmailMailhog(host=worker_settings.mailhog_host,
                                         port=worker_settings.mailhog_port,
@@ -55,4 +49,4 @@ class Worker:
     async def run(self) -> None:
         await self.consumer.consume_c()
 
-# TODO добавить ws нормально, сделать разные сендеры в зависимости от настроек енв, генераторы писем и получение темплейтов из постгры, укорачиватель ссылоку, сервис авторизации
+# TODO генераторы писем и получение темплейтов из постгры, укорачиватель ссылоку, сервис авторизации

@@ -16,3 +16,8 @@ class Message(BaseModel):
 class WSMessage(BaseModel):
     username: str
     text: str
+
+
+class SMS(BaseModel):
+    number: str
+    text: str

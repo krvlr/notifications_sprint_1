@@ -18,6 +18,71 @@ import websockets
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+REVIEW_RATED = "review.rated"
+USER_REGISTERED = "user.registered"
+ADMIN = "admin.event"
+
+
+class MessageGenerator:
+    def generate_email(self, mess):
+        if mess.event_type == USER_REGISTERED:
+            return self.generate_welcome_mail(mess)
+        elif mess.event_type == REVIEW_RATED:
+            return self.generate_rating_mail(mess)
+        elif mess.event_type == ADMIN:
+            return self.generate_mass_sending_mail(mess)
+
+    def generate_welcome_mail(self, mess):
+        current_path = os.path.dirname(__file__)
+        loader = FileSystemLoader(current_path)
+        env = Environment(loader=loader)
+
+        subject = f'Добро пожаловать, {mess.body.username}'
+        content = f'Добро пожаловать!'
+
+        template = env.get_template('mail.html')
+        data = {
+            'title': f'{subject}',
+            'text': f'{content}',
+            'image': 'https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg'
+        }
+        output = template.render(**data)
+        return output, subject
+
+    def generate_rating_mail(self, mess):
+        current_path = os.path.dirname(__file__)
+        loader = FileSystemLoader(current_path)
+        env = Environment(loader=loader)
+
+        subject = f'Вашему обзору поставили оценку, {mess.body.username}'
+        content = f'Вашему обзору поставили оценку!'
+
+        template = env.get_template('mail.html')
+        data = {
+            'title': f'{subject}',
+            'text': f'{content}',
+            'image': 'https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg'
+        }
+        output = template.render(**data)
+        return output, subject
+
+    def generate_mass_sending_mail(self, mess):
+        current_path = os.path.dirname(__file__)
+        loader = FileSystemLoader(current_path)
+        env = Environment(loader=loader)
+
+        subject = f'Массовая рассылка'
+        content = f'Массовая рассылка!'
+
+        template = env.get_template('mail.html')
+        data = {
+            'title': f'{subject}',
+            'text': f'{content}',
+            'image': 'https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg'
+        }
+        output = template.render(**data)
+        return output, subject
+
 
 class SenderBase(ABC):
     @abstractmethod
@@ -38,34 +103,19 @@ class SenderEmailMailhog(SenderBase):
             logger.info(f'Mailhog {self.host} {str(self.port)}')
             self.server = smtplib.SMTP(self.host, self.port)
 
-    async def send_message(self, mess: Message) -> None:
-        current_path = os.path.dirname(__file__)
-        loader = FileSystemLoader(current_path)
-        env = Environment(loader=loader)
+    async def send_message(self, mess: Any) -> None:
+        output, subject = MessageGenerator.generate_welcome_mail(mess)
 
         to_email = f'{mess.body.username}@mail.com'
-        subject = mess.event_type
-        content = mess.event_type
-        if mess.event_type == "user-reporting.v1.registered":
-            subject = f'Добро пожаловать, {mess.body.username}'
-            content = f'Добро пожаловать!'
-
-        template = env.get_template('mail.html')
-        data = {
-            'title': f'{subject}',
-            'text': f'{content}',
-            'image': 'https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg'
-        }
-        output = template.render(**data)
-
-        message1 = EmailMessage()
-        message1["From"] = f'{self.from_email}'
-        message1["To"] = ",".join([f'{to_email}'])
-        message1["Subject"] = f'{subject}!'
-        message1.add_alternative(output, subtype='html')
+        email_message = EmailMessage()
+        email_message["From"] = f'{self.from_email}'
+        email_message["To"] = ",".join([f'{to_email}'])
+        email_message["Subject"] = f'{subject}!'
+        email_message.add_alternative(output, subtype='html')
         receivers = [to_email, ]
+
         try:
-            self.server.sendmail(self.from_email, receivers, message1.as_string())
+            self.server.sendmail(self.from_email, receivers, email_message.as_string())
         except smtplib.SMTPException as exc:
             reason = f'{type(exc).__name__}: {exc}'
             print(f'Не удалось отправить письмо. {reason}')
@@ -119,27 +169,20 @@ class SenderEmailSendgrid(SenderBase):
 
 
 class SenderWebsocket(SenderBase):
-    def __init__(self, host: str, port: int, token: str, api_url: str):
+    def __init__(self, host: str, port: int):
         self.host = host
         self.port = port
-        self.token = token
-        self.api_url = api_url
 
     async def send_message(
         self,
         ws_mess: WSMessage
     ) -> None:
-        #ws_server = websockets.serve(receiver, "localhost", 8765)
+        # ws_server = websockets.serve(receiver, "localhost", 8765)
 
-        url = 'ws://{host}:{port}/'.format(
-            host=self.host,
-            port=self.port,
-            api=self.api_url,
-            token=self.token,
-        )
+        uri = f'ws://{self.host}:{self.port}/'
         mess = {
             'username': ws_mess.username,
             'text': ws_mess.text,
         }
-        async with websockets.connect(url) as websocket:
+        async with websockets.connect(uri) as websocket:
             await websocket.send(json.dumps(mess))
