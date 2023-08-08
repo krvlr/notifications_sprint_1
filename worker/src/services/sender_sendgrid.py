@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class SenderEmailSendgrid(SenderBase):
-    def __init__(self, from_email: str = None):
+    def __init__(self, from_email: str = ''):
         self.sg = None
         self.from_email = from_email
         self.connect()
@@ -23,7 +23,6 @@ class SenderEmailSendgrid(SenderBase):
     def connect(self):
         if self.sg is None:
             self.sg = SendGridAPIClient(worker_settings.sendgrid_key)
-            print('')
 
     async def send_message(self, mess: Message) -> None:
         current_path = os.path.dirname(__file__)
@@ -52,7 +51,8 @@ class SenderEmailSendgrid(SenderBase):
             html_content=output
         )
         try:
-            self.sg.send(message)
+            if self.sg:
+                self.sg.send(message)
         except smtplib.SMTPException as exc:
             reason = f'{type(exc).__name__}: {exc}'
             print(f'Не удалось отправить письмо Sendgrid. {reason}')

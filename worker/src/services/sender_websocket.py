@@ -2,7 +2,7 @@ import json
 import logging
 
 import websockets
-
+from websockets.sync.client import connect
 from models.message import WSMessage
 
 from services.sender_base import SenderBase
@@ -28,5 +28,6 @@ class SenderWebsocket(SenderBase):
             'username': ws_mess.username,
             'text': ws_mess.text,
         }
-        async with websockets.connect(uri) as websocket:
-            await websocket.send(json.dumps(mess))
+
+        with connect(uri) as websocket:
+            websocket.send(json.dumps(mess))

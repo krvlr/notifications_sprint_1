@@ -36,7 +36,8 @@ class SenderEmailMailhog(SenderBase):
         receivers = [to_email, ]
 
         try:
-            self.server.sendmail(self.from_email, receivers, email_message.as_string())
+            if self.server:
+                self.server.sendmail(self.from_email, receivers, email_message.as_string())
         except smtplib.SMTPException as exc:
             reason = f'{type(exc).__name__}: {exc}'
             print(f'Не удалось отправить письмо. {reason}')
