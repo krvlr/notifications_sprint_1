@@ -4,6 +4,7 @@ from db.models.user import User, UserRole, Role
 from db.token_storage_adapter import TokenStatus, TokenStorageAdapter, get_redis_adapter
 from utils.exceptions import (
     AccountUserDetailsException,
+    CustomException,
     # AccountUsersDetailsException
 )
 from sqlalchemy import select
@@ -14,7 +15,7 @@ class UserDetailsService:
     def __init__(self, token_storage_adapter: TokenStorageAdapter):
         self.token_storage = token_storage_adapter
 
-    def check_jwt_status(self, user_id: str, jti: str, ex: Exception):
+    def check_jwt_status(self, user_id: str, jti: str, ex: CustomException):
         status = self.token_storage.get_status(user_id=user_id, jti=jti)
 
         if status == TokenStatus.NOT_FOUND:

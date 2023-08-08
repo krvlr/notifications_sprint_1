@@ -15,6 +15,7 @@ from utils.exceptions import (
     AccountModifiedRoleException,
     AccountRoleDetailsException,
     AccountRolesDetailsException,
+    CustomException,
 )
 
 from db import alchemy
@@ -24,7 +25,7 @@ class RoleService:
     def __init__(self, token_storage_adapter: TokenStorageAdapter):
         self.token_storage = token_storage_adapter
 
-    def check_jwt_status(self, user_id: str, jti: str, ex: Exception):
+    def check_jwt_status(self, user_id: str, jti: str, ex: CustomException):
         status = self.token_storage.get_status(user_id=user_id, jti=jti)
 
         if status == TokenStatus.NOT_FOUND:

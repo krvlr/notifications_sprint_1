@@ -14,6 +14,7 @@ from utils.exceptions import (
     AccountSignoutAllException,
     AccountSignoutException,
     AccountSignupException,
+    CustomException,
 )
 
 from db import alchemy
@@ -50,7 +51,7 @@ class AuthService:
         )
         return dict(access_token=access_token, refresh_token=refresh_token)
 
-    def check_jwt_status(self, user_id: str, jti: str, ex: Exception):
+    def check_jwt_status(self, user_id: str, jti: str, ex: CustomException):
         status = self.token_storage.get_status(user_id=user_id, jti=jti)
 
         if status == TokenStatus.NOT_FOUND:

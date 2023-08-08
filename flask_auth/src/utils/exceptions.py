@@ -59,6 +59,10 @@ def add_base_exceptions_handlers(app):
         )
 
 
+class CustomException(Exception):
+    pass
+
+
 class AccountSignupException(Exception):
     def __init__(self, error_message: str):
         self.error_message = f"Ошибка регистрации пользователя. {error_message}"
