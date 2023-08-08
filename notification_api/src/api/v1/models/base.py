@@ -1,6 +1,17 @@
+from enum import Enum
+
 from pydantic import BaseModel
 
-from models.base import DeliveryType, MessagePriority
+
+
+class MessagePriority(Enum):
+    LOW = "low"
+    HIGH = "high"
+
+
+class DeliveryType(Enum):
+    EMAIL = "email"
+    WEB_SOCKET = "web_socket"
 
 
 class Event(BaseModel):

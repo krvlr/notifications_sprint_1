@@ -87,7 +87,7 @@ services:
 
   notification_rabbitmq:
     image: rabbitmq:3-management
-    container_name: notification_rabbitmq_management
+    container_name: notification_rabbitmq
     env_file:
       - .env
     ports:

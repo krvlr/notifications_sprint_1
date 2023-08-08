@@ -23,37 +23,11 @@ async def main():
         worker = Worker(cons)
         await worker.run()
 
-    logging.info('Waiting for messages')
+    logging.info('Waiting for rabbit messages')
     try:
         await asyncio.Future()
     finally:
         await connection.close()
-
-    # queue_name = "low"
-    # routing_key = "low"
-    #
-    # channel = await connection.channel()
-    #
-    # # await channel.default_exchange.publish(
-    # #         aio_pika.Message(body=f"Hello {queue_name}".encode()),
-    # #         routing_key=queue_name,
-    # # )
-    #
-    #
-    # #queue_name = "high"
-    #
-    # #channel = await connection.channel()
-    #
-    # await channel.set_qos(prefetch_count=100)
-    #
-    # queue = await channel.declare_queue(queue_name, auto_delete=True)
-    #
-    # await queue.consume(process_message)
-    #
-    # try:
-    #     await asyncio.Future()
-    # finally:
-    #     await connection.close()
 
 
 if __name__ == '__main__':

@@ -8,3 +8,4 @@ sendgrid
 asyncio
 jinja2
 websockets
+psycopg2

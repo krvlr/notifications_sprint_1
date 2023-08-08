@@ -4,12 +4,13 @@ from typing import Optional
 
 class Body(BaseModel):
     username: str
-    created_at: str
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
 
 
 class Message(BaseModel):
     delivery_type: str
-    event_type: str
+    event: str
     body: Body
 
 

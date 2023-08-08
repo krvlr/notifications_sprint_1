@@ -2,7 +2,9 @@ import aio_pika
 
 from core.config import worker_settings
 from db.rabbitmq import ConsumerRabbitMQ
-from db.sender import SenderEmailMailhog, SenderEmailSendgrid, SenderWebsocket
+from services.sender_mailhog import SenderEmailMailhog
+from services.sender_sendgrid import SenderEmailSendgrid
+from services.sender_websocket import SenderWebsocket
 
 
 async def get_queue(
@@ -23,7 +25,7 @@ async def create_consumers(
 
     for routing_key in worker_settings.routing_keys:
         queue = await get_queue(connection, routing_key)
-
+        print(routing_key)
         if worker_settings.sender_type == 'Email':
             if worker_settings.using_mailhog:
                 sender = SenderEmailMailhog(host=worker_settings.mailhog_host,
@@ -38,7 +40,7 @@ async def create_consumers(
                                         port=worker_settings.mailhog_port,
                                         from_email=worker_settings.from_email)
 
-        consumers.append(ConsumerRabbitMQ(queue, 0, sender))
+        consumers.append(ConsumerRabbitMQ(queue, sender))
     return consumers
 
 
@@ -48,5 +50,3 @@ class Worker:
 
     async def run(self) -> None:
         await self.consumer.consume_c()
-
-# TODO генераторы писем и получение темплейтов из постгры, укорачиватель ссылоку, сервис авторизации

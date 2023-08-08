@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
-from models.base import WorkerMessage, MessagePriority
+from models.base import WorkerMessage
+from api.v1.models.base import MessagePriority
 
 
 class AmqpBroker(ABC):

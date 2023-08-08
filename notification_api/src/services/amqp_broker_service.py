@@ -7,7 +7,7 @@ from pamqp.exceptions import AMQPFrameError
 from db.base_amqp import AmqpBroker
 from db.rabbitmq import RabbitMQ
 from core.config import rabbitmq_settings
-from models.base import MessagePriority
+from api.v1.models.base import MessagePriority
 
 amqp_broker: Union[AmqpBroker, None] = None
 rabbitmq_connection: Union[aio_pika.abc.AbstractConnection, None] = None
