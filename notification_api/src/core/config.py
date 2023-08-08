@@ -22,7 +22,7 @@ class LoggerSettings(BaseConfig):
 class RabbitMQSettings(BaseConfig):
     login: str = Field(default="guest", env="RABBITMQ_DEFAULT_USER")
     password: str = Field(default="guest", env="RABBITMQ_DEFAULT_PASS", repr=False)
-    host: str = Field(default="localhost", env="RABBITMQ_HOST")
+    host: str = Field(default="notification_rabbitmq", env="RABBITMQ_HOST")
     port: int = Field(default=5672, env="RABBITMQ_PORT")
 
 
