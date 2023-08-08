@@ -1,0 +1,34 @@
+Получение информации о пользователе
+---
+description: Endpoint для получения информации о пользователе.
+tags:
+  - Сервис получения информации о пользователях.
+parameters:
+  - name: body
+    description: Тело запроса должно содержать все необходимые для смены пароля данные.
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - "user_id"
+      properties:
+        user_id:
+          type: string
+          example: "b185ea97-18b1-42d0-acfe-1cb6115ac81f"
+  - name: Authorization
+    in: header
+    description: В заголовке Authorization запроса должен присутствовать Access токен (Bearer <access_token>)
+    required: true
+    type: string
+responses:
+  200:
+    description: Администатор успешно получил информацию о пользователе.
+  400:
+    description: Произошла ошибка при попытке получить информацию о пользователе.
+  405:
+    description: Метод не разрешен для запрошенного URL.
+  415:
+    description: Ошибка формата входных данных.
+  422:
+    description: Ошибка состава запроса.

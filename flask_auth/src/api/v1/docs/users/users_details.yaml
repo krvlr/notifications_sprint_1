@@ -1,0 +1,34 @@
+Получение информации о пользователях подписки
+---
+description: Endpoint для получения информации о пользователях подписки.
+tags:
+  - Сервис получения информации о пользователях.
+parameters:
+  - name: body
+    description: Тело запроса должно содержать все необходимые для смены пароля данные.
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - "name"
+      properties:
+        name:
+          type: string
+          example: "default"
+  - name: Authorization
+    in: header
+    description: В заголовке Authorization запроса должен присутствовать Access токен (Bearer <access_token>)
+    required: true
+    type: string
+responses:
+  200:
+    description: Администатор успешно получил информацию о пользователях подписки.
+  400:
+    description: Произошла ошибка при попытке получить информацию о пользователях подписки.
+  405:
+    description: Метод не разрешен для запрошенного URL.
+  415:
+    description: Ошибка формата входных данных.
+  422:
+    description: Ошибка состава запроса.
