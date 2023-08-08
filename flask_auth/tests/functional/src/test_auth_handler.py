@@ -494,7 +494,9 @@ async def test_password_change(make_post_request, postgre_engine, cases: list[di
         },
     ],
 )
-async def test_history(make_post_request, make_get_request, postgre_engine, cases: list[dict[str, list]]):
+async def test_history(
+    make_post_request, make_get_request, postgre_engine, cases: list[dict[str, list]]
+):
     for case in cases["signup"]:
         response = await make_post_request(
             endpoint="signup", data=case["request"], flush_cache=False

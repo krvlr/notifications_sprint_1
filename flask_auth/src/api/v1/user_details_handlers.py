@@ -4,13 +4,13 @@ from flasgger import swag_from
 from flask import Blueprint, jsonify
 from models.common import BaseResponse
 from models.user_models import UserDetailsRequest, UserDetailsResponse, UsersDetailsRequest
-from utils.exceptions import AccountUserDetailsException
 from utils.rate_limit import limit_leaky_bucket
 from utils.user_action import log_action
 from services.user_details_service import get_user_details_service
 from utils.common import get_data_from_body
 from flask_jwt_extended import current_user, jwt_required, get_jwt
 from utils.common import check_is_admin
+from utils.exceptions import AccountUserDetailsException, AccountUsersDetailsException
 
 
 user_details_bp = Blueprint("user", __name__)

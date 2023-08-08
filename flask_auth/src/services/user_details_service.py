@@ -2,7 +2,10 @@ from functools import lru_cache
 
 from db.models.user import User, UserRole, Role
 from db.token_storage_adapter import TokenStatus, TokenStorageAdapter, get_redis_adapter
-from utils.exceptions import AccountUserDetailsException, AccountUsersDetailsException
+from utils.exceptions import (
+    AccountUserDetailsException,
+    # AccountUsersDetailsException
+)
 from sqlalchemy import select
 from db import alchemy
 
@@ -49,7 +52,7 @@ class UserDetailsService:
             .join(UserRole, User.id == UserRole.user_id)
             .join(Role, Role.id == UserRole.role_id)
             .where(Role.name == name)
-            .where(User.is_admin == False)
+            .where(User.is_admin == False)  # noqa: E712, E261
         )
         return [user.User.to_dict() for user in alchemy.session.execute(query)]
 
