@@ -1,18 +1,17 @@
 import logging
 import smtplib
+from email.message import EmailMessage
 from typing import Any
 
-from services.sender_base import SenderBase
-from email.message import EmailMessage
-
 from services.mail_generator import MessageGenerator
+from services.sender_base import SenderBase
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
 class SenderEmailMailhog(SenderBase):
-    def __init__(self, host: str, port: int, from_email: str = None):
+    def __init__(self, host: str, port: int, from_email: str = ''):
         self.host = host
         self.port = port
         self.server = None
@@ -25,7 +24,7 @@ class SenderEmailMailhog(SenderBase):
             self.server = smtplib.SMTP(self.host, self.port)
 
     async def send_message(self, mess: Any) -> None:
-        mess_gen=MessageGenerator()
+        mess_gen = MessageGenerator()
         output, subject = mess_gen.generate_email(mess)
 
         to_email = f'{mess.body.username}@mail.com'

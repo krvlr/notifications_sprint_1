@@ -6,11 +6,11 @@ from pydantic_settings import BaseSettings
 
 
 class PostgresSettings(BaseSettings):
-    dbname: str = Field('db_name', env='DB_NAME')
-    user: str = Field('db_user', env='DB_USER')
-    password: str = Field('db_password', env='DB_PASSWORD')
-    host: str = Field('notification_db', env='DB_HOST')
-    port: int = Field(5432, env='DB_PORT')
+    dbname: str = Field(default='db_name', env='DB_NAME')
+    user: str = Field(default='db_user', env='DB_USER')
+    password: str = Field(default='db_password', env='DB_PASSWORD')
+    host: str = Field(default='notification_db', env='DB_HOST')
+    port: int = Field(default=5432, env='DB_PORT')
 
     class Config:
         extra = Extra.ignore
@@ -25,18 +25,18 @@ class WorkerSettings(BaseSettings):
     rabbit_host: str = Field(default="notification_rabbitmq", env="RABBITMQ_HOST")
     rabbit_port: int = Field(default=5672, env="RABBITMQ_PORT")
 
-    mailhog_host: str = Field('mailhog', env='MAILHOG_HOST')
-    mailhog_port: int = Field(1025, env='MAILHOG_PORT')
-    using_mailhog: bool = Field(True, env='USING_MAILHOG')
+    mailhog_host: str = Field(default='mailhog', env='MAILHOG_HOST')
+    mailhog_port: int = Field(default=1025, env='MAILHOG_PORT')
+    using_mailhog: bool = Field(default=True, env='USING_MAILHOG')
 
-    sender_type: str = Field('Email', env='CONSUMER_TYPE')
-    sendgrid_key: str = Field('', env='SENDGRID_KEY')
-    from_email: str = Field('ivan@ivan.com', env='FROM_EMAIL')
+    sender_type: str = Field(default='Email', env='CONSUMER_TYPE')
+    sendgrid_key: str = Field(default='', env='SENDGRID_KEY')
+    from_email: str = Field(default='ivan@ivan.com', env='FROM_EMAIL')
 
     # low='low'+settings.consumertype
-    routing_keys: List[str] = Field(['low', 'middle', 'high'], env='ROUTING_KEYS')
-    ws_host: str = Field('localhost', env='WS_HOST')
-    ws_port: int = Field(8765, env='WS_PORT')
+    routing_keys: List[str] = Field(default=['low', 'middle', 'high'], env='ROUTING_KEYS')
+    ws_host: str = Field(default='localhost', env='WS_HOST')
+    ws_port: int = Field(default=8765, env='WS_PORT')
 
     class Config:
         extra = Extra.ignore

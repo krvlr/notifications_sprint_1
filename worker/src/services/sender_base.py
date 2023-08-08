@@ -12,5 +12,3 @@ class SenderBase(ABC):
     @abstractmethod
     async def send_message(self, mess: Any) -> None:
         pass
-
-

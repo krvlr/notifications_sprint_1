@@ -1,6 +1,6 @@
-from pydantic import BaseModel, UUID4
+from pydantic import BaseModel
 
 
-class Task(BaseModel):       
+class Task(BaseModel):
     template: str
     users: list[str]

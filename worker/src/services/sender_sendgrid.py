@@ -35,7 +35,7 @@ class SenderEmailSendgrid(SenderBase):
         content = ''
         if mess.event_type == "user-reporting.v1.registered":
             subject = f'Добро пожаловать, {mess.body.username}'
-            content = f'Добро пожаловать!'
+            content = 'Добро пожаловать!'
 
         template = env.get_template('mail.html')
         data = {

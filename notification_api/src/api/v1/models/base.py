@@ -3,7 +3,6 @@ from enum import Enum
 from pydantic import BaseModel
 
 
-
 class MessagePriority(Enum):
     LOW = "low"
     HIGH = "high"

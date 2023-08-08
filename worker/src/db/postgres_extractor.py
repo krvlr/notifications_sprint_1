@@ -14,7 +14,7 @@ def get_cursor(connection):
         cur.close()
 
 
-#@backoff()
+# @backoff()
 def create_conn(connection_param):
     return psycopg2.connect(**connection_param, cursor_factory=DictCursor)
 

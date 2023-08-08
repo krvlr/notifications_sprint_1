@@ -1,15 +1,13 @@
-import os
-
 from core.config import pg_settings
 from db.postgres_extractor import PostgresExtractor
 from db.postgres_extractor import get_pg_conn
-from jinja2 import Environment, FileSystemLoader, FunctionLoader
+from jinja2 import Environment, FunctionLoader
 
 REVIEW_RATED = "review.rated"
 USER_REGISTERED = "user.registered"
 ADMIN = "admin.event"
 
-WELCOME_TEMPLATE_ID = 'deb23acb-89e4-42f0-9b2d-97e62ce828e9'
+WELCOME_TEMPLATE_ID = 'd901cd22-4cc1-4d62-a6ab-0c2f39478798'
 
 
 class MessageGenerator:
@@ -38,7 +36,7 @@ class MessageGenerator:
         env = Environment(loader=loader)
 
         subject = f'Добро пожаловать, {mess.body.username}'
-        content = f'Добро пожаловать!'
+        content = 'Добро пожаловать!'
 
         template = env.get_template_func('welcome.html')
         data = {
@@ -54,7 +52,7 @@ class MessageGenerator:
         env = Environment(loader=loader)
 
         subject = f'Вашему обзору поставили оценку, {mess.body.username}'
-        content = f'Вашему обзору поставили оценку!'
+        content = 'Вашему обзору поставили оценку!'
 
         template = env.get_template_by_id('rating.html')
         data = {
@@ -69,8 +67,8 @@ class MessageGenerator:
         loader = FunctionLoader(self.get_template_func)
         env = Environment(loader=loader)
 
-        subject = f'Массовая рассылка'
-        content = f'Массовая рассылка!'
+        subject = 'Массовая рассылка'
+        content = 'Массовая рассылка!'
 
         template = env.get_template_by_id('mail.html')
         data = {
