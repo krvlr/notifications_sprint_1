@@ -2,15 +2,11 @@ from enum import Enum
 
 from pydantic import BaseModel
 
+from api.v1.models.user import User
 
-class MessagePriority(Enum):
-    LOW = "low"
-    HIGH = "high"
+from api.v1.models.review import ReviewRating
 
-
-class DeliveryType(Enum):
-    EMAIL = "email"
-    WEB_SOCKET = "web_socket"
+from api.v1.models.base import DeliveryType
 
 
 class Event(Enum):
@@ -22,4 +18,4 @@ class Event(Enum):
 class WorkerMessage(BaseModel):
     delivery_type: DeliveryType
     event: Event
-    body: BaseModel
+    body: User | ReviewRating

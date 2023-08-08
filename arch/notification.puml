@@ -25,7 +25,7 @@ component " Таблицы:\n Шаблоны отправки email \n Исто�
 component "Worker\nMail" as WorkerMail
 component "Worker\nWebsocket" as WorkerWebsocket
 package NOTIFICATION_API {
-component " FastApi_Notification\n Сервис регистрации событий в БД" as FastApi_Notification
+component " FastApi_Notification\n" as FastApi_Notification
 
 }
 
@@ -33,16 +33,17 @@ NGINX<-->NOTIFICATION_API
 Auth_API-->FastApi_Notification: Событие о регистрации
 UGC-->FastApi_Notification: "Событие \nЛайк комментария"
 NOTIFICATION_API-->Rabbit: "Отправляет\n задания в очередь"
-Table<-up->FastApi_Notification
 Manager-->Admin_django
-Admin_django-->FastApi_Notification: Шаблоны email
+Admin_django-->notification_postgres: Шаблоны email, расписания
 
 
 WorkerMail-->email_queue:Забирает задания
 WorkerWebsocket-->websocket_queue:Забирает задания
-WorkerMail-up->Client:Отправка email
-WorkerWebsocket-up->Client:Отправка websocket
+WorkerMail-->Client:Отправка email
+WorkerMail-->Table
+WorkerWebsocket-->Client:Отправка websocket
+WorkerWebsocket-->Table
 
-Scheduler<-up->Table: Забирает расписание заданий
-Scheduler-->Rabbit: Отправляет задание в очередь
+Scheduler<-->Table: Забирает расписание заданий
+Scheduler-->FastApi_Notification: Отправляет задание в очередь
 @enduml

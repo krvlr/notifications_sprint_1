@@ -3,7 +3,6 @@ version: '3'
 volumes:
   notif_postgres_data:
   static_value:
-  rabbitmq_data:
 
 networks:
   notification_network:
@@ -21,6 +20,7 @@ services:
       - "5432:5432"
     volumes:
       - notif_postgres_data:/var/lib/postgresql/data/
+      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql:ro
     networks:
       - notification_network
     healthcheck:
@@ -30,14 +30,6 @@ services:
       retries: 5
     expose:
       - "5432"
-
-  notification_rabbitmq:
-    image: rabbitmq:latest
-    container_name: notification_rabbitmq
-    env_file:
-      - .env
-    ports:
-      - "5672:5672"
 
   api-notification:
     build:
@@ -54,6 +46,8 @@ services:
       retries: 3
     env_file:
       - .env
+    ports:
+      - "8000:8000"
     networks:
       - notification_network
     expose:
@@ -77,14 +71,46 @@ services:
       - "8000"
 
 
+  worker:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    container_name: worker-mail
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - notification_network
+    expose:
+      - "8000"
+    links:
+      - 'mailhog'
+
+  notification_rabbitmq:
+    image: rabbitmq:3-management
+    container_name: notification_rabbitmq
+    env_file:
+      - .env
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - notification_network
+    expose:
+      - "5672"
+
   mailhog:
     image: mailhog/mailhog:latest
     container_name: notification_mailhog
     ports:
       - "8025:8025"
+      - "1025:1025"
     env_file:
       - .env
-
+    networks:
+      - notification_network
+    expose:
+      - "1025"
 
 #  scheduler:
 #    build:

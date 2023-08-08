@@ -1,9 +1,10 @@
-from pydantic import Field
+from pydantic import Field, Extra
 from pydantic_settings import BaseSettings
 
 
 class BaseConfig(BaseSettings):
     class Config:
+        extra = Extra.ignore
         env_file = ".env"
 
 
@@ -21,7 +22,7 @@ class LoggerSettings(BaseConfig):
 class RabbitMQSettings(BaseConfig):
     login: str = Field(default="guest", env="RABBITMQ_DEFAULT_USER")
     password: str = Field(default="guest", env="RABBITMQ_DEFAULT_PASS", repr=False)
-    host: str = Field(default="127.0.0.1", env="RABBITMQ_HOST")
+    host: str = Field(default="localhost", env="RABBITMQ_HOST")
     port: int = Field(default=5672, env="RABBITMQ_PORT")
 
 

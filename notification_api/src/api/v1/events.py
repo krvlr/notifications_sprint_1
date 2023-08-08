@@ -33,10 +33,12 @@ async def post_user_registered(
     user_event: UserEvent,
     amqp_broker: AmqpBroker = Depends(get_amqp_broker),
 ) -> Response:
-    message = WorkerMessage(
+    message1 = WorkerMessage(
         delivery_type=user_event.delivery_type,
         event=Event.USER_REGISTERED,
         body=user_event.body,
     )
-    await amqp_broker.post(priority=user_event.message_priority, message=message)
+    print(message1)
+
+    await amqp_broker.post(priority=user_event.message_priority, message=message1)
     return Response(status_code=HTTPStatus.OK)
