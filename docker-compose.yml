@@ -20,7 +20,7 @@ services:
       - "5432:5432"
     volumes:
       - notif_postgres_data:/var/lib/postgresql/data/
-      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql:ro
+      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
     networks:
       - notification_network
     healthcheck:

@@ -38,7 +38,7 @@ class MessageGenerator:
         subject = f'Добро пожаловать, {mess.body.username}'
         content = 'Добро пожаловать!'
 
-        template = env.get_template_func('welcome.html')
+        template = env.get_template('welcome.html')
         data = {
             'title': f'{subject}',
             'text': f'{content}',
@@ -54,7 +54,7 @@ class MessageGenerator:
         subject = f'Вашему обзору поставили оценку, {mess.body.username}'
         content = 'Вашему обзору поставили оценку!'
 
-        template = env.get_template_by_id('rating.html')
+        template = env.get_template('rating.html')
         data = {
             'title': f'{subject}',
             'text': f'{content}',
@@ -70,7 +70,7 @@ class MessageGenerator:
         subject = 'Массовая рассылка'
         content = 'Массовая рассылка!'
 
-        template = env.get_template_by_id('mail.html')
+        template = env.get_template('mail.html')
         data = {
             'title': f'{subject}',
             'text': f'{content}',
