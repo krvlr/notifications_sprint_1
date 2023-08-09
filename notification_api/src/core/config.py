@@ -15,7 +15,9 @@ class ProjectSettings(BaseConfig):
 class LoggerSettings(BaseConfig):
     debug: bool = Field(default=True, env="DEBUG")
     level: str = Field(default="INFO", env="LOGGING_LEVEL")
-    format: str = Field(default="%(asctime)s - %(name)s - %(levelname)s - %(message)s", env="LOG_FORMAT")
+    format: str = Field(
+        default="%(asctime)s - %(name)s - %(levelname)s - %(message)s", env="LOG_FORMAT"
+    )
     default_handlers: list = ["console"]
 
 

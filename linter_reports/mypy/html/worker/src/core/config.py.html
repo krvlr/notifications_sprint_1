@@ -1,0 +1,146 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="../../../../mypy-html.css">
+</head>
+<body>
+<h2>worker.src.core.config</h2>
+<table>
+<caption>worker\src\core\config.py</caption>
+<tbody><tr>
+<td class="table-lines"><pre><span id="L1" class="lineno"><a class="lineno" href="#L1">1</a></span>
+<span id="L2" class="lineno"><a class="lineno" href="#L2">2</a></span>
+<span id="L3" class="lineno"><a class="lineno" href="#L3">3</a></span>
+<span id="L4" class="lineno"><a class="lineno" href="#L4">4</a></span>
+<span id="L5" class="lineno"><a class="lineno" href="#L5">5</a></span>
+<span id="L6" class="lineno"><a class="lineno" href="#L6">6</a></span>
+<span id="L7" class="lineno"><a class="lineno" href="#L7">7</a></span>
+<span id="L8" class="lineno"><a class="lineno" href="#L8">8</a></span>
+<span id="L9" class="lineno"><a class="lineno" href="#L9">9</a></span>
+<span id="L10" class="lineno"><a class="lineno" href="#L10">10</a></span>
+<span id="L11" class="lineno"><a class="lineno" href="#L11">11</a></span>
+<span id="L12" class="lineno"><a class="lineno" href="#L12">12</a></span>
+<span id="L13" class="lineno"><a class="lineno" href="#L13">13</a></span>
+<span id="L14" class="lineno"><a class="lineno" href="#L14">14</a></span>
+<span id="L15" class="lineno"><a class="lineno" href="#L15">15</a></span>
+<span id="L16" class="lineno"><a class="lineno" href="#L16">16</a></span>
+<span id="L17" class="lineno"><a class="lineno" href="#L17">17</a></span>
+<span id="L18" class="lineno"><a class="lineno" href="#L18">18</a></span>
+<span id="L19" class="lineno"><a class="lineno" href="#L19">19</a></span>
+<span id="L20" class="lineno"><a class="lineno" href="#L20">20</a></span>
+<span id="L21" class="lineno"><a class="lineno" href="#L21">21</a></span>
+<span id="L22" class="lineno"><a class="lineno" href="#L22">22</a></span>
+<span id="L23" class="lineno"><a class="lineno" href="#L23">23</a></span>
+<span id="L24" class="lineno"><a class="lineno" href="#L24">24</a></span>
+<span id="L25" class="lineno"><a class="lineno" href="#L25">25</a></span>
+<span id="L26" class="lineno"><a class="lineno" href="#L26">26</a></span>
+<span id="L27" class="lineno"><a class="lineno" href="#L27">27</a></span>
+<span id="L28" class="lineno"><a class="lineno" href="#L28">28</a></span>
+<span id="L29" class="lineno"><a class="lineno" href="#L29">29</a></span>
+<span id="L30" class="lineno"><a class="lineno" href="#L30">30</a></span>
+<span id="L31" class="lineno"><a class="lineno" href="#L31">31</a></span>
+<span id="L32" class="lineno"><a class="lineno" href="#L32">32</a></span>
+<span id="L33" class="lineno"><a class="lineno" href="#L33">33</a></span>
+<span id="L34" class="lineno"><a class="lineno" href="#L34">34</a></span>
+<span id="L35" class="lineno"><a class="lineno" href="#L35">35</a></span>
+<span id="L36" class="lineno"><a class="lineno" href="#L36">36</a></span>
+<span id="L37" class="lineno"><a class="lineno" href="#L37">37</a></span>
+<span id="L38" class="lineno"><a class="lineno" href="#L38">38</a></span>
+<span id="L39" class="lineno"><a class="lineno" href="#L39">39</a></span>
+<span id="L40" class="lineno"><a class="lineno" href="#L40">40</a></span>
+<span id="L41" class="lineno"><a class="lineno" href="#L41">41</a></span>
+<span id="L42" class="lineno"><a class="lineno" href="#L42">42</a></span>
+<span id="L43" class="lineno"><a class="lineno" href="#L43">43</a></span>
+<span id="L44" class="lineno"><a class="lineno" href="#L44">44</a></span>
+<span id="L45" class="lineno"><a class="lineno" href="#L45">45</a></span>
+<span id="L46" class="lineno"><a class="lineno" href="#L46">46</a></span>
+<span id="L47" class="lineno"><a class="lineno" href="#L47">47</a></span>
+</pre></td>
+<td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">from typing import List</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="No Anys on this line!">from pydantic import Field, Extra</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="No Anys on this line!">from pydantic_settings import BaseSettings</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="No Anys on this line!">class PostgresSettings(BaseSettings):</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x7)
+Error (x1)">    dbname: str = Field(default="db_name", env="DB_NAME")</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x7)
+Error (x1)">    user: str = Field(default="db_user", env="DB_USER")</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x7)
+Error (x1)">    password: str = Field(default="db_password", env="DB_PASSWORD")</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x7)
+Error (x1)">    host: str = Field(default="notification_db", env="DB_HOST")</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x7)
+Error (x1)">    port: int = Field(default=5432, env="DB_PORT")</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="No Anys on this line!">    class Config:</span>
+<span class="line-precise" title="No Anys on this line!">        extra = Extra.ignore</span>
+<span class="line-precise" title="No Anys on this line!">        env_file = ".env"</span>
+<span class="line-precise" title="No Anys on this line!">        env_file_encoding = "utf-8"</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="No Anys on this line!">class WorkerSettings(BaseSettings):</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x7)
+Error (x1)">    rabbit_user: str = Field(default="guest", env="RABBITMQ_USER")</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x7)
+Error (x1)">    rabbit_password: str = Field(default="guest", env="RABBITMQ_PASS")</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x7)
+Error (x1)">    rabbit_host: str = Field(default="notification_rabbitmq", env="RABBITMQ_HOST")</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x7)
+Error (x1)">    rabbit_port: int = Field(default=5672, env="RABBITMQ_PORT")</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x7)
+Error (x1)">    mailhog_host: str = Field(default="mailhog", env="MAILHOG_HOST")</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x7)
+Error (x1)">    mailhog_port: int = Field(default=1025, env="MAILHOG_PORT")</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x7)
+Error (x1)">    using_mailhog: bool = Field(default=True, env="USING_MAILHOG")</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x7)
+Error (x1)">    sender_type: str = Field(default="Email", env="CONSUMER_TYPE")</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x7)
+Error (x1)">    sendgrid_key: str = Field(default="", env="SENDGRID_KEY")</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x7)
+Error (x1)">    from_email: str = Field(default="ivan@ivan.com", env="FROM_EMAIL")</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-empty" title="No Anys on this line!">    # low='low'+settings.consumertype</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x7)
+Error (x1)">    routing_keys: List[str] = Field(default=["low", "middle", "high"], env="ROUTING_KEYS")</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x7)
+Error (x1)">    ws_host: str = Field(default="localhost", env="WS_HOST")</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x7)
+Error (x1)">    ws_port: int = Field(default=8765, env="WS_PORT")</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="No Anys on this line!">    class Config:</span>
+<span class="line-precise" title="No Anys on this line!">        extra = Extra.ignore</span>
+<span class="line-precise" title="No Anys on this line!">        env_file = ".env"</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="No Anys on this line!">worker_settings = WorkerSettings()</span>
+<span class="line-precise" title="No Anys on this line!">pg_settings = PostgresSettings()</span>
+</pre></td>
+</tr></tbody>
+</table>
+</body>
+</html>

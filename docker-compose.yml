@@ -46,8 +46,6 @@ services:
       retries: 3
     env_file:
       - .env
-    ports:
-      - "8000:8000"
     networks:
       - notification_network
     expose:
@@ -70,13 +68,14 @@ services:
     expose:
       - "8000"
 
-
   worker:
     build:
       context: ./worker
       dockerfile: Dockerfile
     container_name: worker-mail
     restart: always
+    depends_on:
+      - api-notification
     env_file:
       - .env
     networks:
@@ -112,20 +111,20 @@ services:
     expose:
       - "1025"
 
-#  scheduler:
-#    build:
-#      context: ./scheduler
-#      dockerfile: Dockerfile
-#    env_file:
-#      - .env
-#    depends_on:
-#      - notification_db
-#      - notification-admin
-#      - notification_api
-#    networks:
-#      - notification_network
-#    expose:
-#      - "8000"
+  scheduler:
+    build:
+      context: ./scheduler
+      dockerfile: Dockerfile
+    depends_on:
+      - notification_db
+      - notification-admin
+      - api-notification
+    networks:
+      - notification_network
+    env_file:
+      - .env
+    expose:
+      - "8000"
 
   notification_nginx:
     image: nginx:1.23.1-alpine

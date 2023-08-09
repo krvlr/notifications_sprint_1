@@ -5,49 +5,51 @@ from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
 
-from delivery_api_client import DeliveryApiClient
-from models.mailing import AdminEvent, Periodicity
+from api_client import ApiClient
 from db.postgresql import PostgresStorage
+from models.mailing import MassMailingEvent, Timing
 
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
 
 
-def get_next_date(current_planed_date: datetime, periodicity: str) -> datetime | None:
-    if periodicity == Periodicity.once.value:
+def get_next_date(current_planed_date: datetime, timing: Timing) -> datetime | None:
+    if timing == Timing.ONE:
         return None
-    mapping = {
-        Periodicity.daily.value: "days",
-        Periodicity.weekly.value: "weeks",
-        Periodicity.monthly.value: "months",
-    }
-    return current_planed_date + relativedelta(**{mapping[periodicity]: 1})  # type: ignore
+    timing_relativedelta_mapping = {Timing.WEEK: "weeks", Timing.MONTH: "months"}
+    return current_planed_date + relativedelta(**{timing_relativedelta_mapping[timing]: 1})  # type: ignore
 
 
 storage = PostgresStorage()
-api_client = DeliveryApiClient()
+api_client = ApiClient()
 
 if __name__ == "__main__":
+    logger.info("Scheduler starting")
+
     while True:
-        admin_events = storage.get_pending_notifications()
+        time.sleep(1)
 
-        for event in admin_events:
-            admin_event = AdminEvent(**event)
+        mass_mailing_events = storage.get_notifications()
+
+        for event in mass_mailing_events:
+            mass_mailing_event = MassMailingEvent(**event)
+
+            logger.info(f"Process message for mass mailing {mass_mailing_event.model_json_schema()}")
+
             next_date = get_next_date(
-                admin_event.next_planned_date,
-                admin_event.periodicity.value,
+                mass_mailing_event.planned_date,
+                mass_mailing_event.timing,
             )
 
-            response = api_client.send(
-                delivery_type=admin_event.channel.value,
-                cohort=admin_event.user_group,
-                template_id=admin_event.template_id,
-                subject=admin_event.subject,
-                priority=admin_event.priority.value,
+            response = api_client.post_mass_mailing(
+                transport_type=mass_mailing_event.transport_type.value,
+                cohort=mass_mailing_event.group,
+                template_id=mass_mailing_event.template_id,
+                message_priority=mass_mailing_event.message_priority.value,
             )
+
             if response.status_code == http.HTTPStatus.OK:
-                storage.update_processed_notifications(
-                    admin_event.id,
+                storage.update_mailing_date(
+                    mass_mailing_event.id,
                     next_date,
                 )
-            time.sleep(1)

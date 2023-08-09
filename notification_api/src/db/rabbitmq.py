@@ -1,10 +1,8 @@
-import json
-
 import aio_pika
 
+from api.v1.models.base import MessagePriority
 from db.base_amqp import AmqpBroker
 from models.base import WorkerMessage
-from api.v1.models.base import MessagePriority
 
 
 class RabbitMQ(AmqpBroker):
@@ -13,15 +11,13 @@ class RabbitMQ(AmqpBroker):
 
     async def post(
         self,
-        priority: MessagePriority,
+        message_priority: MessagePriority,
         message: WorkerMessage,
     ) -> None:
-        mess = aio_pika.Message(
-            body=message.json().encode(),
-            delivery_mode=aio_pika.DeliveryMode.PERSISTENT,
-        )
-        print(f'{message.json().encode()}')
         await self.exchange.publish(
-            message=mess,
-            routing_key=priority.value,
+            message=aio_pika.Message(
+                body=message.model_dump_json().encode(),
+                delivery_mode=aio_pika.DeliveryMode.PERSISTENT,
+            ),
+            routing_key=message_priority.value,
         )

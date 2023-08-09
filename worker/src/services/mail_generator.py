@@ -7,7 +7,7 @@ REVIEW_RATED = "review.rated"
 USER_REGISTERED = "user.registered"
 ADMIN = "admin.event"
 
-WELCOME_TEMPLATE_ID = 'd901cd22-4cc1-4d62-a6ab-0c2f39478798'
+WELCOME_TEMPLATE_ID = "d901cd22-4cc1-4d62-a6ab-0c2f39478798"
 
 
 class MessageGenerator:
@@ -20,9 +20,9 @@ class MessageGenerator:
             return self.generate_mass_sending_mail(mess)
 
     def get_template_func(self, name):
-        if name == 'welcome.html':
+        if name == "welcome.html":
             template_id = WELCOME_TEMPLATE_ID
-        elif name == 'rating.html':
+        elif name == "rating.html":
             template_id = WELCOME_TEMPLATE_ID
         else:
             template_id = WELCOME_TEMPLATE_ID
@@ -35,14 +35,14 @@ class MessageGenerator:
         loader = FunctionLoader(self.get_template_func)
         env = Environment(loader=loader)
 
-        subject = f'Добро пожаловать, {mess.body.username}'
-        content = 'Добро пожаловать!'
+        subject = f"Добро пожаловать, {mess.body.user_id}"
+        content = "Добро пожаловать!"
 
-        template = env.get_template('welcome.html')
+        template = env.get_template("welcome.html")
         data = {
-            'title': f'{subject}',
-            'text': f'{content}',
-            'image': 'https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg'
+            "title": f"{subject}",
+            "text": f"{content}",
+            "image": "https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg",
         }
         output = template.render(**data)
         return output, subject
@@ -51,14 +51,14 @@ class MessageGenerator:
         loader = FunctionLoader(self.get_template_func)
         env = Environment(loader=loader)
 
-        subject = f'Вашему обзору поставили оценку, {mess.body.username}'
-        content = 'Вашему обзору поставили оценку!'
+        subject = f"Вашему обзору поставили оценку, {mess.body.user_id}"
+        content = "Вашему обзору поставили оценку!"
 
-        template = env.get_template('rating.html')
+        template = env.get_template("rating.html")
         data = {
-            'title': f'{subject}',
-            'text': f'{content}',
-            'image': 'https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg'
+            "title": f"{subject}",
+            "text": f"{content}",
+            "image": "https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg",
         }
         output = template.render(**data)
         return output, subject
@@ -67,14 +67,14 @@ class MessageGenerator:
         loader = FunctionLoader(self.get_template_func)
         env = Environment(loader=loader)
 
-        subject = 'Массовая рассылка'
-        content = 'Массовая рассылка!'
+        subject = "Массовая рассылка"
+        content = "Массовая рассылка!"
 
-        template = env.get_template('mail.html')
+        template = env.get_template("mail.html")
         data = {
-            'title': f'{subject}',
-            'text': f'{content}',
-            'image': 'https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg'
+            "title": f"{subject}",
+            "text": f"{content}",
+            "image": "https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg",
         }
         output = template.render(**data)
         return output, subject

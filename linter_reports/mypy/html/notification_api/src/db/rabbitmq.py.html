@@ -30,11 +30,13 @@
 <span id="L20" class="lineno"><a class="lineno" href="#L20">20</a></span>
 <span id="L21" class="lineno"><a class="lineno" href="#L21">21</a></span>
 <span id="L22" class="lineno"><a class="lineno" href="#L22">22</a></span>
+<span id="L23" class="lineno"><a class="lineno" href="#L23">23</a></span>
 </pre></td>
 <td class="table-code"><pre><span class="line-any" title="No Anys on this line!">import aio_pika</span>
 <span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-any" title="No Anys on this line!">from api.v1.models.base import MessagePriority</span>
 <span class="line-any" title="No Anys on this line!">from db.base_amqp import AmqpBroker</span>
-<span class="line-any" title="No Anys on this line!">from models.base import WorkerMessage, MessagePriority</span>
+<span class="line-any" title="No Anys on this line!">from models.base import WorkerMessage</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">class RabbitMQ(AmqpBroker):</span>
@@ -46,7 +48,7 @@ Unimported (x2)">        self.exchange = exchange</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x2)">    async def post(</span>
 <span class="line-empty" title="No Anys on this line!">        self,</span>
-<span class="line-empty" title="No Anys on this line!">        priority: MessagePriority,</span>
+<span class="line-empty" title="No Anys on this line!">        message_priority: MessagePriority,</span>
 <span class="line-empty" title="No Anys on this line!">        message: WorkerMessage,</span>
 <span class="line-empty" title="No Anys on this line!">    ) -&gt; None:</span>
 <span class="line-any" title="Any Types on this line: 
@@ -54,12 +56,12 @@ Unimported (x3)">        await self.exchange.publish(</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x3)">            message=aio_pika.Message(</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x5)">                body=message.json().encode(),</span>
+Unimported (x5)">                body=message.model_dump_json().encode(),</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x3)">                delivery_mode=aio_pika.DeliveryMode.PERSISTENT,</span>
 <span class="line-empty" title="No Anys on this line!">            ),</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x2)">            routing_key=priority.value,</span>
+Unimported (x2)">            routing_key=message_priority.value,</span>
 <span class="line-empty" title="No Anys on this line!">        )</span>
 </pre></td>
 </tr></tbody>

@@ -6,5 +6,9 @@ from api.v1.models.base import MessagePriority
 
 class AmqpBroker(ABC):
     @abstractmethod
-    async def post(self, priority: MessagePriority, message: WorkerMessage) -> None:
+    async def post(
+        self,
+        message_priority: MessagePriority,
+        message: WorkerMessage,
+    ) -> None:
         pass

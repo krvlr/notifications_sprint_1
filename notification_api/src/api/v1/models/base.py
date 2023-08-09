@@ -5,14 +5,15 @@ from pydantic import BaseModel
 
 class MessagePriority(Enum):
     LOW = "low"
+    MIDDLE = "middle"
     HIGH = "high"
 
 
-class DeliveryType(Enum):
+class TransportType(Enum):
     EMAIL = "email"
-    WEB_SOCKET = "web_socket"
+    WEB_SOCKET = "websocket"
 
 
 class Event(BaseModel):
-    delivery_type: DeliveryType
+    transport_type: TransportType
     message_priority: MessagePriority

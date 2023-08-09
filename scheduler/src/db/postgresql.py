@@ -27,29 +27,31 @@ class PostgresStorage(Storage):
         connection_.close()
 
     @backoff.on_exception(wait_gen=backoff.expo, exception=Exception)
-    def get_pending_notifications(self) -> DictRow:
+    def get_notifications(self) -> DictRow:
         """Возвращает список рассылок с датой меньше или равной текущей"""
-        query = (
-            "SELECT ns.id, ns.next_planned_date, ns.periodicity, "
-            "ns.user_group, ns.template_id, nt.subject, nt.channel, "
-            "ns.priority FROM notifications_scheduledmailing AS ns "
-            "JOIN notifications_template AS nt "
-            "ON ns.template_id = nt.id WHERE next_planned_date <= %s"
-        )
         with self.conn_context() as conn:
             with conn.cursor() as curs:
-                curs.execute(query, (datetime.now(),))
+                curs.execute(
+                    "SELECT schedules.id, schedules.planned_date, schedules.group, "
+                    "schedules.template_id, schedules.priority as message_priority, "
+                    "schedules.timing, templates.transport_type "
+                    "FROM notification.schedules JOIN notification.templates "
+                    "ON schedules.template_id = templates.id WHERE schedules.planned_date <= %s",
+                    (datetime.now(),),
+                )
                 while row := curs.fetchone():
                     yield row
 
     @backoff.on_exception(wait_gen=backoff.expo, exception=Exception)
-    def update_processed_notifications(
+    def update_mailing_date(
         self,
         notification_id: uuid.UUID,
-        next_date: datetime,
+        planned_date: datetime,
     ):
-        """Обновляет запланированную дату рассылки после отправки в очередь"""
-        query = "UPDATE notifications_scheduledmailing " + "SET next_planned_date = %s WHERE id = %s"
+        """Обновляет дату рассылки после отправки в очередь"""
         with self.conn_context() as conn:
             with conn.cursor() as curs:
-                curs.execute(query, (str(next_date), str(notification_id)))
+                curs.execute(
+                    "UPDATE notification.schedules SET planned_date = %s WHERE id = %s",
+                    (planned_date, str(notification_id)),
+                )

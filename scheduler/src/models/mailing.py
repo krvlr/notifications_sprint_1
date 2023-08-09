@@ -5,29 +5,28 @@ from enum import Enum
 from pydantic import BaseModel
 
 
-class Periodicity(Enum):
-    once = "once"
-    daily = "daily"
-    weekly = "weekly"
-    monthly = "monthly"
+class Timing(Enum):
+    ONE = "one"
+    WEEK = "week"
+    MONTH = "month"
 
 
 class TransportType(Enum):
-    email = "email"
-    websocket = "websocket"
+    EMAIL = "email"
+    WEBSOCKET = "websocket"
 
 
 class MessagePriority(Enum):
     LOW = "low"
+    MIDDLE = "middle"
     HIGH = "high"
 
 
-class AdminEvent(BaseModel):
+class MassMailingEvent(BaseModel):
     id: uuid.UUID
-    user_group: str
+    planned_date: datetime
+    group: str
     template_id: uuid.UUID
-    subject: str
-    channel: TransportType
-    periodicity: Periodicity
-    priority: MessagePriority
-    next_planned_date: datetime
+    message_priority: MessagePriority
+    timing: Timing
+    transport_type: TransportType

@@ -5,11 +5,10 @@ from pydantic import BaseModel
 from api.v1.models.base import Event
 
 
-class AdminModel(BaseModel):
+class MassMailingModel(BaseModel):
     cohort: str
-    subject: str
     template_id: uuid.UUID
 
 
-class AdminEvent(Event):
-    body: AdminModel
+class MassMailingEvent(Event):
+    body: MassMailingModel

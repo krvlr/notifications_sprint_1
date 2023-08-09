@@ -1,21 +1,17 @@
 from enum import Enum
 
-from pydantic import BaseModel
+from pydantic import BaseModel, typing
 
-from api.v1.models.user import User
-
-from api.v1.models.review import ReviewRating
-
-from api.v1.models.base import DeliveryType
+from api.v1.models.base import TransportType
 
 
 class Event(Enum):
     REVIEW_RATED = "review.rated"
     USER_REGISTERED = "user.registered"
-    ADMIN = "admin.event"
+    MASS_MAILING = "mass.mailing"
 
 
 class WorkerMessage(BaseModel):
-    delivery_type: DeliveryType
+    transport_type: TransportType
     event: Event
-    body: User | ReviewRating
+    body: typing.Any

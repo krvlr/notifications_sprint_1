@@ -46,12 +46,12 @@
 <span class="line-precise" title="Any Types on this line: 
 Explicit (x20)
 Omitted Generics (x4)">    @backoff.on_exception(wait_gen=backoff.expo, exception=Exception)</span>
-<span class="line-any" title="No Anys on this line!">    def send(self, delivery_type, cohort, template_id, subject, priority):</span>
+<span class="line-any" title="No Anys on this line!">    def send(self, transport_type, cohort, template_id, subject, priority):</span>
 <span class="line-empty" title="No Anys on this line!">        """Отправить запланированную рассылку на обработку"""</span>
 <span class="line-any" title="Any Types on this line: 
 Unannotated (x1)">        body = {</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">            "delivery_type": delivery_type,</span>
+Unannotated (x1)">            "transport_type": transport_type,</span>
 <span class="line-any" title="Any Types on this line: 
 Unannotated (x1)">            "priority": priority,</span>
 <span class="line-any" title="Any Types on this line: 

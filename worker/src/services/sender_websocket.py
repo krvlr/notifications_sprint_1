@@ -16,18 +16,15 @@ class SenderWebsocket(SenderBase):
         self.host = host
         self.port = port
 
-    async def send_message(
-        self,
-        ws_mess: WSMessage
-    ) -> None:
-        print('ws')
+    async def send_message(self, ws_mess: WSMessage) -> None:
+        print("ws")
         # ws_server = websockets.serve(receiver, "localhost", 8765)
 
-        uri = f'ws://{self.host}:{self.port}/'
+        uri = f"ws://{self.host}:{self.port}/"
         mess = {
-            'username': ws_mess.username,
-            'text': ws_mess.text,
+            "username": ws_mess.user_id,
+            "text": ws_mess.text,
         }
 
         with connect(uri) as websocket:
-            websocket.send(json.dumps(mess))
+            websocket.post_mass_mailing(json.dumps(mess))

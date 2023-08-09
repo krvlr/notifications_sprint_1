@@ -25,40 +25,28 @@
 <span id="L15" class="lineno"><a class="lineno" href="#L15">15</a></span>
 <span id="L16" class="lineno"><a class="lineno" href="#L16">16</a></span>
 <span id="L17" class="lineno"><a class="lineno" href="#L17">17</a></span>
-<span id="L18" class="lineno"><a class="lineno" href="#L18">18</a></span>
-<span id="L19" class="lineno"><a class="lineno" href="#L19">19</a></span>
-<span id="L20" class="lineno"><a class="lineno" href="#L20">20</a></span>
-<span id="L21" class="lineno"><a class="lineno" href="#L21">21</a></span>
-<span id="L22" class="lineno"><a class="lineno" href="#L22">22</a></span>
-<span id="L23" class="lineno"><a class="lineno" href="#L23">23</a></span>
-<span id="L24" class="lineno"><a class="lineno" href="#L24">24</a></span>
-<span id="L25" class="lineno"><a class="lineno" href="#L25">25</a></span>
 </pre></td>
 <td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">from enum import Enum</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-precise" title="No Anys on this line!">from pydantic import BaseModel</span>
+<span class="line-precise" title="No Anys on this line!">from pydantic import BaseModel, typing</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-precise" title="No Anys on this line!">class MessagePriority(Enum):</span>
-<span class="line-precise" title="No Anys on this line!">    LOW = "low"</span>
-<span class="line-precise" title="No Anys on this line!">    HIGH = "high"</span>
-<span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-precise" title="No Anys on this line!">class DeliveryType(Enum):</span>
-<span class="line-precise" title="No Anys on this line!">    EMAIL = "email"</span>
-<span class="line-precise" title="No Anys on this line!">    WEB_SOCKET = "web_socket"</span>
+<span class="line-any" title="No Anys on this line!">from api.v1.models.base import TransportType</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">class Event(Enum):</span>
 <span class="line-precise" title="No Anys on this line!">    REVIEW_RATED = "review.rated"</span>
 <span class="line-precise" title="No Anys on this line!">    USER_REGISTERED = "user.registered"</span>
-<span class="line-precise" title="No Anys on this line!">    ADMIN = "admin.event"</span>
+<span class="line-precise" title="No Anys on this line!">    MASS_MAILING = "mass.mailing"</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-precise" title="No Anys on this line!">class WorkerMessage(BaseModel):</span>
-<span class="line-precise" title="No Anys on this line!">    delivery_type: DeliveryType</span>
+<span class="line-any" title="Any Types on this line: 
+Unimported (x1)
+Explicit (x1)">class WorkerMessage(BaseModel):</span>
+<span class="line-any" title="Any Types on this line: 
+Unimported (x2)">    transport_type: TransportType</span>
 <span class="line-precise" title="No Anys on this line!">    event: Event</span>
-<span class="line-precise" title="No Anys on this line!">    body: BaseModel</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x2)">    body: typing.Any</span>
 </pre></td>
 </tr></tbody>
 </table>

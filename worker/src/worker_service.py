@@ -26,19 +26,23 @@ async def create_consumers(
     for routing_key in worker_settings.routing_keys:
         queue = await get_queue(connection, routing_key)
         print(routing_key)
-        if worker_settings.sender_type == 'Email':
+        if worker_settings.sender_type == "Email":
             if worker_settings.using_mailhog:
-                sender = SenderEmailMailhog(host=worker_settings.mailhog_host,
-                                            port=worker_settings.mailhog_port,
-                                            from_email=worker_settings.from_email)
+                sender = SenderEmailMailhog(
+                    host=worker_settings.mailhog_host,
+                    port=worker_settings.mailhog_port,
+                    from_email=worker_settings.from_email,
+                )
             else:
                 sender = SenderEmailSendgrid(from_email=worker_settings.from_email)
-        elif worker_settings.sender_type == 'Websocket':
+        elif worker_settings.sender_type == "Websocket":
             sender = SenderWebsocket(host=worker_settings, port=worker_settings.ws_port)
         else:
-            sender = SenderEmailMailhog(host=worker_settings.mailhog_host,
-                                        port=worker_settings.mailhog_port,
-                                        from_email=worker_settings.from_email)
+            sender = SenderEmailMailhog(
+                host=worker_settings.mailhog_host,
+                port=worker_settings.mailhog_port,
+                from_email=worker_settings.from_email,
+            )
 
         consumers.append(ConsumerRabbitMQ(queue, sender))
     return consumers

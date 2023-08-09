@@ -16,14 +16,13 @@ async def post_rating(
     review_rating_event: ReviewRatingEvent,
     amqp_broker: AmqpBroker = Depends(get_amqp_broker),
 ) -> Response:
-    message = WorkerMessage(
-        delivery_type=review_rating_event.delivery_type,
-        event=Event.REVIEW_RATED,
-        body=review_rating_event.body,
-    )
     await amqp_broker.post(
-        priority=review_rating_event.message_priority,
-        message=message,
+        message_priority=review_rating_event.message_priority,
+        message=WorkerMessage(
+            transport_type=review_rating_event.transport_type,
+            event=Event.REVIEW_RATED,
+            body=review_rating_event.body,
+        ),
     )
     return Response(status_code=HTTPStatus.OK)
 
@@ -33,12 +32,12 @@ async def post_user_registered(
     user_event: UserEvent,
     amqp_broker: AmqpBroker = Depends(get_amqp_broker),
 ) -> Response:
-    message1 = WorkerMessage(
-        delivery_type=user_event.delivery_type,
-        event=Event.USER_REGISTERED,
-        body=user_event.body,
+    await amqp_broker.post(
+        message_priority=user_event.message_priority,
+        message=WorkerMessage(
+            transport_type=user_event.transport_type,
+            event=Event.USER_REGISTERED,
+            body=user_event.body,
+        ),
     )
-    print(message1)
-
-    await amqp_broker.post(priority=user_event.message_priority, message=message1)
     return Response(status_code=HTTPStatus.OK)
