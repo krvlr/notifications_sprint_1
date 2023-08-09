@@ -88,8 +88,12 @@
 <span id="L78" class="lineno"><a class="lineno" href="#L78">78</a></span>
 <span id="L79" class="lineno"><a class="lineno" href="#L79">79</a></span>
 <span id="L80" class="lineno"><a class="lineno" href="#L80">80</a></span>
+<span id="L81" class="lineno"><a class="lineno" href="#L81">81</a></span>
+<span id="L82" class="lineno"><a class="lineno" href="#L82">82</a></span>
 </pre></td>
-<td class="table-code"><pre><span class="line-any" title="No Anys on this line!">from core.config import pg_settings</span>
+<td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">from typing_extensions import Any</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-any" title="No Anys on this line!">from core.config import pg_settings</span>
 <span class="line-any" title="No Anys on this line!">from db.postgres_extractor import PostgresExtractor</span>
 <span class="line-any" title="No Anys on this line!">from db.postgres_extractor import get_pg_conn</span>
 <span class="line-precise" title="No Anys on this line!">from jinja2 import Environment, FunctionLoader</span>
@@ -102,123 +106,109 @@
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">class MessageGenerator:</span>
-<span class="line-any" title="No Anys on this line!">    def generate_email(self, mess):</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">        if mess.event == USER_REGISTERED:</span>
+Explicit (x1)
+Unannotated (x1)">    def generate_email(self, message: Any):</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">            return self.generate_welcome_mail(mess)</span>
+Explicit (x3)">        if message.event == USER_REGISTERED:</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">        elif mess.event == REVIEW_RATED:</span>
+Unannotated (x2)
+Explicit (x2)">            return self.generate_welcome_mail(message)</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">            return self.generate_rating_mail(mess)</span>
+Explicit (x3)">        elif message.event == REVIEW_RATED:</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">        elif mess.event == ADMIN:</span>
+Unannotated (x2)
+Explicit (x2)">            return self.generate_rating_mail(message)</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">            return self.generate_mass_sending_mail(mess)</span>
+Explicit (x3)">        elif message.event == ADMIN:</span>
+<span class="line-any" title="Any Types on this line: 
+Unannotated (x2)
+Explicit (x2)">            return self.generate_mass_sending_mail(message)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="No Anys on this line!">    def get_template_func(self, name):</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x2)">        if name == "welcome.html":</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">            template_id = WELCOME_TEMPLATE_ID</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x2)">        elif name == "rating.html":</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">            template_id = WELCOME_TEMPLATE_ID</span>
+Unannotated (x1)">    def get_template_func(self, name: str):</span>
+<span class="line-precise" title="No Anys on this line!">        if name == "welcome.html":</span>
+<span class="line-precise" title="No Anys on this line!">            template_id = WELCOME_TEMPLATE_ID</span>
+<span class="line-precise" title="No Anys on this line!">        elif name == "rating.html":</span>
+<span class="line-precise" title="No Anys on this line!">            template_id = WELCOME_TEMPLATE_ID</span>
 <span class="line-empty" title="No Anys on this line!">        else:</span>
+<span class="line-precise" title="No Anys on this line!">            template_id = WELCOME_TEMPLATE_ID</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">            template_id = WELCOME_TEMPLATE_ID</span>
+Unimported (x6)">        with get_pg_conn(pg_settings.dict()) as pg_conn:</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x4)
-Unimported (x2)">        with get_pg_conn(pg_settings.dict()) as pg_conn:</span>
+Unimported (x4)">            postgres_extractor = PostgresExtractor(pg_conn)</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x3)
-Unimported (x1)">            postgres_extractor = PostgresExtractor(pg_conn)</span>
+Unimported (x4)">            template_body = postgres_extractor.get_template_by_id(template_id)</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x5)">            template_body = postgres_extractor.get_template_by_id(template_id)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x2)">            return template_body[0]</span>
+Unimported (x2)">            return template_body[0]</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="No Anys on this line!">    def generate_welcome_mail(self, mess):</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">        loader = FunctionLoader(self.get_template_func)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)
+Explicit (x1)
+Unannotated (x1)">    def generate_welcome_mail(self, message: Any):</span>
+<span class="line-precise" title="Any Types on this line: 
+Unannotated (x1)">        loader = FunctionLoader(self.get_template_func)</span>
+<span class="line-precise" title="Any Types on this line: 
 Explicit (x3)">        env = Environment(loader=loader)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x8)">        subject = f"Добро пожаловать, {mess.body.user_id}"</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">        content = "Добро пожаловать!"</span>
+Explicit (x3)">        subject = f"Добро пожаловать, {message.body.user_id}"</span>
+<span class="line-precise" title="No Anys on this line!">        content = "Добро пожаловать!"</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x4)">        template = env.get_template("welcome.html")</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">        data = {</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">            "title": f"{subject}",</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">            "text": f"{content}",</span>
-<span class="line-any" title="No Anys on this line!">            "image": "https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg",</span>
+<span class="line-precise" title="Any Types on this line: 
+Explicit (x1)">        template = env.get_template("welcome.html")</span>
+<span class="line-precise" title="No Anys on this line!">        data = {</span>
+<span class="line-precise" title="No Anys on this line!">            "title": f"{subject}",</span>
+<span class="line-precise" title="No Anys on this line!">            "text": f"{content}",</span>
+<span class="line-precise" title="No Anys on this line!">            "image": "https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg",</span>
 <span class="line-empty" title="No Anys on this line!">        }</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x5)">        output = template.render(**data)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x2)">        return output, subject</span>
+Explicit (x2)">        output = template.render(**data)</span>
+<span class="line-precise" title="No Anys on this line!">        return output, subject</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="No Anys on this line!">    def generate_rating_mail(self, mess):</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">        loader = FunctionLoader(self.get_template_func)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)
+Explicit (x1)
+Unannotated (x1)">    def generate_rating_mail(self, message: Any):</span>
+<span class="line-precise" title="Any Types on this line: 
+Unannotated (x1)">        loader = FunctionLoader(self.get_template_func)</span>
+<span class="line-precise" title="Any Types on this line: 
 Explicit (x3)">        env = Environment(loader=loader)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x8)">        subject = f"Вашему обзору поставили оценку, {mess.body.user_id}"</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">        content = "Вашему обзору поставили оценку!"</span>
+Explicit (x3)">        subject = f"Вашему обзору поставили оценку, {message.body.user_id}"</span>
+<span class="line-precise" title="No Anys on this line!">        content = "Вашему обзору поставили оценку!"</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x4)">        template = env.get_template("rating.html")</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">        data = {</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">            "title": f"{subject}",</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">            "text": f"{content}",</span>
-<span class="line-any" title="No Anys on this line!">            "image": "https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg",</span>
+<span class="line-precise" title="Any Types on this line: 
+Explicit (x1)">        template = env.get_template("rating.html")</span>
+<span class="line-precise" title="No Anys on this line!">        data = {</span>
+<span class="line-precise" title="No Anys on this line!">            "title": f"{subject}",</span>
+<span class="line-precise" title="No Anys on this line!">            "text": f"{content}",</span>
+<span class="line-precise" title="No Anys on this line!">            "image": "https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg",</span>
 <span class="line-empty" title="No Anys on this line!">        }</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x5)">        output = template.render(**data)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x2)">        return output, subject</span>
+Explicit (x2)">        output = template.render(**data)</span>
+<span class="line-precise" title="No Anys on this line!">        return output, subject</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="No Anys on this line!">    def generate_mass_sending_mail(self, mess):</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">        loader = FunctionLoader(self.get_template_func)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)
+Explicit (x1)
+Unannotated (x1)">    def generate_mass_sending_mail(self, message: Any):</span>
+<span class="line-precise" title="Any Types on this line: 
+Unannotated (x1)">        loader = FunctionLoader(self.get_template_func)</span>
+<span class="line-precise" title="Any Types on this line: 
 Explicit (x3)">        env = Environment(loader=loader)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">        subject = "Массовая рассылка"</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">        content = "Массовая рассылка!"</span>
+<span class="line-precise" title="No Anys on this line!">        subject = "Массовая рассылка"</span>
+<span class="line-precise" title="No Anys on this line!">        content = "Массовая рассылка!"</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x4)">        template = env.get_template("mail.html")</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">        data = {</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">            "title": f"{subject}",</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">            "text": f"{content}",</span>
-<span class="line-any" title="No Anys on this line!">            "image": "https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg",</span>
+<span class="line-precise" title="Any Types on this line: 
+Explicit (x1)">        template = env.get_template("mail.html")</span>
+<span class="line-precise" title="No Anys on this line!">        data = {</span>
+<span class="line-precise" title="No Anys on this line!">            "title": f"{subject}",</span>
+<span class="line-precise" title="No Anys on this line!">            "text": f"{content}",</span>
+<span class="line-precise" title="No Anys on this line!">            "image": "https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg",</span>
 <span class="line-empty" title="No Anys on this line!">        }</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x5)">        output = template.render(**data)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x2)">        return output, subject</span>
+Explicit (x2)">        output = template.render(**data)</span>
+<span class="line-precise" title="No Anys on this line!">        return output, subject</span>
 </pre></td>
 </tr></tbody>
 </table>

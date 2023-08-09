@@ -23,11 +23,11 @@ class SenderEmailMailhog(SenderBase):
             logger.info(f"Mailhog {self.host} {str(self.port)}")
             self.server = smtplib.SMTP(self.host, self.port)
 
-    async def send_message(self, mess: Any) -> None:
+    async def send_message(self, message: Any) -> None:
         mess_gen = MessageGenerator()
-        output, subject = mess_gen.generate_email(mess)
+        output, subject = mess_gen.generate_email(message)
 
-        to_email = f"{mess.body.user_id}@mail.com"
+        to_email = f"{message.body.user_id}@mail.com"
         email_message = EmailMessage()
         email_message["From"] = f"{self.from_email}"
         email_message["To"] = ",".join([f"{to_email}"])

@@ -190,6 +190,11 @@
 <span id="L180" class="lineno"><a class="lineno" href="#L180">180</a></span>
 <span id="L181" class="lineno"><a class="lineno" href="#L181">181</a></span>
 <span id="L182" class="lineno"><a class="lineno" href="#L182">182</a></span>
+<span id="L183" class="lineno"><a class="lineno" href="#L183">183</a></span>
+<span id="L184" class="lineno"><a class="lineno" href="#L184">184</a></span>
+<span id="L185" class="lineno"><a class="lineno" href="#L185">185</a></span>
+<span id="L186" class="lineno"><a class="lineno" href="#L186">186</a></span>
+<span id="L187" class="lineno"><a class="lineno" href="#L187">187</a></span>
 </pre></td>
 <td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">import json</span>
 <span class="line-precise" title="No Anys on this line!">import logging</span>
@@ -217,112 +222,101 @@
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">class MessageGenerator:</span>
-<span class="line-any" title="No Anys on this line!">    def generate_email(self, mess):</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">        if mess.event == USER_REGISTERED:</span>
+Explicit (x1)
+Unannotated (x1)">    def generate_email(self, message: Any):</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">            return self.generate_welcome_mail(mess)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">        elif mess.event == REVIEW_RATED:</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">            return self.generate_rating_mail(mess)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">        elif mess.event == ADMIN:</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">            return self.generate_mass_sending_mail(mess)</span>
-<span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="No Anys on this line!">    def generate_welcome_mail(self, mess):</span>
+Explicit (x3)">        if message.event == USER_REGISTERED:</span>
 <span class="line-any" title="Any Types on this line: 
 Unannotated (x2)
+Explicit (x2)">            return self.generate_welcome_mail(message)</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x3)">        elif message.event == REVIEW_RATED:</span>
+<span class="line-any" title="Any Types on this line: 
+Unannotated (x2)
+Explicit (x2)">            return self.generate_rating_mail(message)</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x3)">        elif message.event == ADMIN:</span>
+<span class="line-any" title="Any Types on this line: 
+Unannotated (x2)
+Explicit (x2)">            return self.generate_mass_sending_mail(message)</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-empty" title="No Anys on this line!">    @staticmethod</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x1)
+Unannotated (x1)">    def generate_welcome_mail(message: Any):</span>
+<span class="line-precise" title="Any Types on this line: 
 Omitted Generics (x4)">        current_path = os.path.dirname(__file__)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)
+<span class="line-imprecise" title="Any Types on this line: 
 Omitted Generics (x2)">        loader = FileSystemLoader(current_path)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)
+<span class="line-precise" title="Any Types on this line: 
 Explicit (x3)">        env = Environment(loader=loader)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x8)">        subject = f"Добро пожаловать, {mess.body.user_id}"</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">        content = "Добро пожаловать!"</span>
+Explicit (x3)">        subject = f"Добро пожаловать, {message.body.user_id}"</span>
+<span class="line-precise" title="No Anys on this line!">        content = "Добро пожаловать!"</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x4)">        template = env.get_template("mail.html")</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">        data = {</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">            "title": f"{subject}",</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">            "text": f"{content}",</span>
-<span class="line-any" title="No Anys on this line!">            "image": "https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg",</span>
+<span class="line-precise" title="Any Types on this line: 
+Explicit (x1)">        template = env.get_template("mail.html")</span>
+<span class="line-precise" title="No Anys on this line!">        data = {</span>
+<span class="line-precise" title="No Anys on this line!">            "title": f"{subject}",</span>
+<span class="line-precise" title="No Anys on this line!">            "text": f"{content}",</span>
+<span class="line-precise" title="No Anys on this line!">            "image": "https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg",</span>
 <span class="line-empty" title="No Anys on this line!">        }</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x5)">        output = template.render(**data)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x2)">        return output, subject</span>
+Explicit (x2)">        output = template.render(**data)</span>
+<span class="line-precise" title="No Anys on this line!">        return output, subject</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="No Anys on this line!">    def generate_rating_mail(self, mess):</span>
+<span class="line-empty" title="No Anys on this line!">    @staticmethod</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x2)
+Explicit (x1)
+Unannotated (x1)">    def generate_rating_mail(message: Any):</span>
+<span class="line-precise" title="Any Types on this line: 
 Omitted Generics (x4)">        current_path = os.path.dirname(__file__)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)
+<span class="line-imprecise" title="Any Types on this line: 
 Omitted Generics (x2)">        loader = FileSystemLoader(current_path)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)
+<span class="line-precise" title="Any Types on this line: 
 Explicit (x3)">        env = Environment(loader=loader)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x8)">        subject = f"Вашему обзору поставили оценку, {mess.body.user_id}"</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">        content = "Вашему обзору поставили оценку!"</span>
+Explicit (x3)">        subject = f"Вашему обзору поставили оценку, {message.body.user_id}"</span>
+<span class="line-precise" title="No Anys on this line!">        content = "Вашему обзору поставили оценку!"</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x4)">        template = env.get_template("mail.html")</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">        data = {</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">            "title": f"{subject}",</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">            "text": f"{content}",</span>
-<span class="line-any" title="No Anys on this line!">            "image": "https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg",</span>
+<span class="line-precise" title="Any Types on this line: 
+Explicit (x1)">        template = env.get_template("mail.html")</span>
+<span class="line-precise" title="No Anys on this line!">        data = {</span>
+<span class="line-precise" title="No Anys on this line!">            "title": f"{subject}",</span>
+<span class="line-precise" title="No Anys on this line!">            "text": f"{content}",</span>
+<span class="line-precise" title="No Anys on this line!">            "image": "https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg",</span>
 <span class="line-empty" title="No Anys on this line!">        }</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x5)">        output = template.render(**data)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x2)">        return output, subject</span>
+Explicit (x2)">        output = template.render(**data)</span>
+<span class="line-precise" title="No Anys on this line!">        return output, subject</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="No Anys on this line!">    def generate_mass_sending_mail(self, mess):</span>
+<span class="line-empty" title="No Anys on this line!">    @staticmethod</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x2)
+Explicit (x1)
+Unannotated (x1)">    def generate_mass_sending_mail(message: Any):</span>
+<span class="line-precise" title="Any Types on this line: 
 Omitted Generics (x4)">        current_path = os.path.dirname(__file__)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)
+<span class="line-imprecise" title="Any Types on this line: 
 Omitted Generics (x2)">        loader = FileSystemLoader(current_path)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)
+<span class="line-precise" title="Any Types on this line: 
 Explicit (x3)">        env = Environment(loader=loader)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">        subject = "Массовая рассылка"</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">        content = "Массовая рассылка!"</span>
+<span class="line-precise" title="No Anys on this line!">        subject = "Массовая рассылка"</span>
+<span class="line-precise" title="No Anys on this line!">        content = "Массовая рассылка!"</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x4)">        template = env.get_template("mail.html")</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">        data = {</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">            "title": f"{subject}",</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x3)">            "text": f"{content}",</span>
-<span class="line-any" title="No Anys on this line!">            "image": "https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg",</span>
+<span class="line-precise" title="Any Types on this line: 
+Explicit (x1)">        template = env.get_template("mail.html")</span>
+<span class="line-precise" title="No Anys on this line!">        data = {</span>
+<span class="line-precise" title="No Anys on this line!">            "title": f"{subject}",</span>
+<span class="line-precise" title="No Anys on this line!">            "text": f"{content}",</span>
+<span class="line-precise" title="No Anys on this line!">            "image": "https://pictures.s3.yandex.net:443/resources/news_1682073799.jpeg",</span>
 <span class="line-empty" title="No Anys on this line!">        }</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x5)">        output = template.render(**data)</span>
-<span class="line-any" title="Any Types on this line: 
-Unannotated (x2)">        return output, subject</span>
+Explicit (x2)">        output = template.render(**data)</span>
+<span class="line-precise" title="No Anys on this line!">        return output, subject</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">class SenderBase(ABC):</span>
@@ -333,7 +327,7 @@ Explicit (x1)">    async def send_message(self, mess: Any) -&gt; None:</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">class SenderEmailMailhog(SenderBase):</span>
-<span class="line-precise" title="No Anys on this line!">    def __init__(self, host: str, port: int, from_email: str = None):</span>
+<span class="line-precise" title="No Anys on this line!">    def __init__(self, host: str, port: int, from_email: str = ""):</span>
 <span class="line-precise" title="No Anys on this line!">        self.host = host</span>
 <span class="line-precise" title="No Anys on this line!">        self.port = port</span>
 <span class="line-precise" title="No Anys on this line!">        self.server = None</span>
@@ -350,13 +344,13 @@ Unannotated (x11)">            logger.info(f"Mailhog {self.host} {str(self.port)
 Unannotated (x4)">            self.server = smtplib.SMTP(self.host, self.port)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-any" title="Any Types on this line: 
-Explicit (x1)">    async def send_message(self, mess: Any) -&gt; None:</span>
+Explicit (x1)">    async def send_message(self, message: Any) -&gt; None:</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x5)
-Explicit (x1)">        output, subject = MessageGenerator.generate_welcome_mail(mess)</span>
+Unannotated (x4)
+Explicit (x2)">        output, subject = MessageGenerator.generate_welcome_mail(message)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-any" title="Any Types on this line: 
-Explicit (x3)">        to_email = f"{mess.body.user_id}@mail.com"</span>
+Explicit (x3)">        to_email = f"{message.body.user_id}@mail.com"</span>
 <span class="line-precise" title="No Anys on this line!">        email_message = EmailMessage()</span>
 <span class="line-precise" title="No Anys on this line!">        email_message["From"] = f"{self.from_email}"</span>
 <span class="line-precise" title="No Anys on this line!">        email_message["To"] = ",".join([f"{to_email}"])</span>
@@ -370,8 +364,8 @@ Unannotated (x1)">        email_message.add_alternative(output, subtype="html")<
 <span class="line-empty" title="No Anys on this line!">        ]</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!">        try:</span>
-<span class="line-any" title="Any Types on this line: 
-Error (x2)">            self.server.sendmail(self.from_email, receivers, email_message.as_string())</span>
+<span class="line-precise" title="No Anys on this line!">            if self.server:</span>
+<span class="line-unanalyzed" title="No Anys on this line!">                self.server.sendmail(self.from_email, receivers, email_message.as_string())</span>
 <span class="line-precise" title="No Anys on this line!">        except smtplib.SMTPException as exc:</span>
 <span class="line-precise" title="Any Types on this line: 
 Explicit (x2)">            reason = f"{type(exc).__name__}: {exc}"</span>
@@ -381,7 +375,7 @@ Explicit (x2)">            reason = f"{type(exc).__name__}: {exc}"</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">class SenderEmailSendgrid(SenderBase):</span>
-<span class="line-precise" title="No Anys on this line!">    def __init__(self, from_email: str = None):</span>
+<span class="line-precise" title="No Anys on this line!">    def __init__(self, from_email: str = ""):</span>
 <span class="line-precise" title="No Anys on this line!">        self.sg = None</span>
 <span class="line-precise" title="No Anys on this line!">        self.from_email = from_email</span>
 <span class="line-any" title="Any Types on this line: 
@@ -426,9 +420,8 @@ Explicit (x2)">        output = template.render(**data)</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x3)">        message = Mail(from_email=self.from_email, to_emails=to_email, subject=subject, html_content=output)</span>
 <span class="line-empty" title="No Anys on this line!">        try:</span>
-<span class="line-any" title="Any Types on this line: 
-Error (x2)
-Unimported (x1)">            self.sg.post_mass_mailing(message)</span>
+<span class="line-precise" title="No Anys on this line!">            if self.sg:</span>
+<span class="line-unanalyzed" title="No Anys on this line!">                self.sg.post_mass_mailing(message)</span>
 <span class="line-precise" title="No Anys on this line!">        except smtplib.SMTPException as exc:</span>
 <span class="line-precise" title="Any Types on this line: 
 Explicit (x2)">            reason = f"{type(exc).__name__}: {exc}"</span>

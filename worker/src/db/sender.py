@@ -24,20 +24,21 @@ ADMIN = "admin.event"
 
 
 class MessageGenerator:
-    def generate_email(self, mess):
-        if mess.event == USER_REGISTERED:
-            return self.generate_welcome_mail(mess)
-        elif mess.event == REVIEW_RATED:
-            return self.generate_rating_mail(mess)
-        elif mess.event == ADMIN:
-            return self.generate_mass_sending_mail(mess)
+    def generate_email(self, message: Any):
+        if message.event == USER_REGISTERED:
+            return self.generate_welcome_mail(message)
+        elif message.event == REVIEW_RATED:
+            return self.generate_rating_mail(message)
+        elif message.event == ADMIN:
+            return self.generate_mass_sending_mail(message)
 
-    def generate_welcome_mail(self, mess):
+    @staticmethod
+    def generate_welcome_mail(message: Any):
         current_path = os.path.dirname(__file__)
         loader = FileSystemLoader(current_path)
         env = Environment(loader=loader)
 
-        subject = f"Добро пожаловать, {mess.body.user_id}"
+        subject = f"Добро пожаловать, {message.body.user_id}"
         content = "Добро пожаловать!"
 
         template = env.get_template("mail.html")
@@ -49,12 +50,13 @@ class MessageGenerator:
         output = template.render(**data)
         return output, subject
 
-    def generate_rating_mail(self, mess):
+    @staticmethod
+    def generate_rating_mail(message: Any):
         current_path = os.path.dirname(__file__)
         loader = FileSystemLoader(current_path)
         env = Environment(loader=loader)
 
-        subject = f"Вашему обзору поставили оценку, {mess.body.user_id}"
+        subject = f"Вашему обзору поставили оценку, {message.body.user_id}"
         content = "Вашему обзору поставили оценку!"
 
         template = env.get_template("mail.html")
@@ -66,7 +68,8 @@ class MessageGenerator:
         output = template.render(**data)
         return output, subject
 
-    def generate_mass_sending_mail(self, mess):
+    @staticmethod
+    def generate_mass_sending_mail(message: Any):
         current_path = os.path.dirname(__file__)
         loader = FileSystemLoader(current_path)
         env = Environment(loader=loader)
@@ -91,7 +94,7 @@ class SenderBase(ABC):
 
 
 class SenderEmailMailhog(SenderBase):
-    def __init__(self, host: str, port: int, from_email: str = None):
+    def __init__(self, host: str, port: int, from_email: str = ""):
         self.host = host
         self.port = port
         self.server = None
@@ -103,10 +106,10 @@ class SenderEmailMailhog(SenderBase):
             logger.info(f"Mailhog {self.host} {str(self.port)}")
             self.server = smtplib.SMTP(self.host, self.port)
 
-    async def send_message(self, mess: Any) -> None:
-        output, subject = MessageGenerator.generate_welcome_mail(mess)
+    async def send_message(self, message: Any) -> None:
+        output, subject = MessageGenerator.generate_welcome_mail(message)
 
-        to_email = f"{mess.body.user_id}@mail.com"
+        to_email = f"{message.body.user_id}@mail.com"
         email_message = EmailMessage()
         email_message["From"] = f"{self.from_email}"
         email_message["To"] = ",".join([f"{to_email}"])
@@ -117,7 +120,8 @@ class SenderEmailMailhog(SenderBase):
         ]
 
         try:
-            self.server.sendmail(self.from_email, receivers, email_message.as_string())
+            if self.server:
+                self.server.sendmail(self.from_email, receivers, email_message.as_string())
         except smtplib.SMTPException as exc:
             reason = f"{type(exc).__name__}: {exc}"
             print(f"Не удалось отправить письмо. {reason}")
@@ -126,7 +130,7 @@ class SenderEmailMailhog(SenderBase):
 
 
 class SenderEmailSendgrid(SenderBase):
-    def __init__(self, from_email: str = None):
+    def __init__(self, from_email: str = ""):
         self.sg = None
         self.from_email = from_email
         self.connect()
@@ -157,7 +161,8 @@ class SenderEmailSendgrid(SenderBase):
 
         message = Mail(from_email=self.from_email, to_emails=to_email, subject=subject, html_content=output)
         try:
-            self.sg.post_mass_mailing(message)
+            if self.sg:
+                self.sg.post_mass_mailing(message)
         except smtplib.SMTPException as exc:
             reason = f"{type(exc).__name__}: {exc}"
             print(f"Не удалось отправить письмо Sendgrid. {reason}")

@@ -67,9 +67,9 @@ Unimported (x1)">    async def process_message(</span>
 Unimported (x4)">        logger.info(message.body.decode())</span>
 <span class="line-empty" title="No Anys on this line!">        try:</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x8)">            mess = Message.model_validate_json(message.body.decode())</span>
+Unimported (x8)">            message = Message.model_validate_json(message.body.decode())</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x4)">            await self.sender.send_message(mess)</span>
+Unimported (x4)">            await self.sender.send_message(message)</span>
 <span class="line-precise" title="No Anys on this line!">        except Exception as ex:</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x4)">            logger.error(f"Exception processing rabbit message {message.body.decode()} {ex}")</span>

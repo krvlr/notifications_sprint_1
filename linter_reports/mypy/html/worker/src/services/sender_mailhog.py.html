@@ -86,15 +86,15 @@ Unannotated (x11)">            logger.info(f"Mailhog {self.host} {str(self.port)
 Unannotated (x4)">            self.server = smtplib.SMTP(self.host, self.port)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-any" title="Any Types on this line: 
-Explicit (x1)">    async def send_message(self, mess: Any) -&gt; None:</span>
+Explicit (x1)">    async def send_message(self, message: Any) -&gt; None:</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x3)">        mess_gen = MessageGenerator()</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x5)
-Explicit (x1)">        output, subject = mess_gen.generate_email(mess)</span>
+Explicit (x1)">        output, subject = mess_gen.generate_email(message)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-any" title="Any Types on this line: 
-Explicit (x3)">        to_email = f"{mess.body.user_id}@mail.com"</span>
+Explicit (x3)">        to_email = f"{message.body.user_id}@mail.com"</span>
 <span class="line-precise" title="No Anys on this line!">        email_message = EmailMessage()</span>
 <span class="line-precise" title="No Anys on this line!">        email_message["From"] = f"{self.from_email}"</span>
 <span class="line-precise" title="No Anys on this line!">        email_message["To"] = ",".join([f"{to_email}"])</span>

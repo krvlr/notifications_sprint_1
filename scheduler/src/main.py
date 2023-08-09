@@ -34,7 +34,9 @@ if __name__ == "__main__":
         for event in mass_mailing_events:
             mass_mailing_event = MassMailingEvent(**event)
 
-            logger.info(f"Process message for mass mailing {mass_mailing_event.model_json_schema()}")
+            logger.info(
+                f"Process message for mass mailing {mass_mailing_event.model_json_schema()}"
+            )
 
             next_date = get_next_date(
                 mass_mailing_event.planned_date,

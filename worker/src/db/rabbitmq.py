@@ -20,8 +20,8 @@ class ConsumerRabbitMQ:
     ) -> None:
         logger.info(message.body.decode())
         try:
-            mess = Message.model_validate_json(message.body.decode())
-            await self.sender.send_message(mess)
+            message = Message.model_validate_json(message.body.decode())
+            await self.sender.send_message(message)
         except Exception as ex:
             logger.error(f"Exception processing rabbit message {message.body.decode()} {ex}")
         await message.ack()
