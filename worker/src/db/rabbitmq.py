@@ -10,11 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class ConsumerRabbitMQ:
-    def __init__(
-        self,
-        queue: aio_pika.abc.AbstractQueue,
-        sender: SenderBase
-    ) -> None:
+    def __init__(self, queue: aio_pika.abc.AbstractQueue, sender: SenderBase) -> None:
         self.queue = queue
         self.sender = sender
 
@@ -24,10 +20,10 @@ class ConsumerRabbitMQ:
     ) -> None:
         logger.info(message.body.decode())
         try:
-            mess = Message.model_validate_json(message.body.decode())
-            await self.sender.send_message(mess)
+            message = Message.model_validate_json(message.body.decode())
+            await self.sender.send_message(message)
         except Exception as ex:
-            logger.error(f'Exception processing rabbit message {message.body.decode()} {ex}')
+            logger.error(f"Exception processing rabbit message {message.body.decode()} {ex}")
         await message.ack()
 
     async def consume_c(self) -> None:

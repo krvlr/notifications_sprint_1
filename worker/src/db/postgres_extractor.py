@@ -38,7 +38,9 @@ class PostgresExtractor:
                 SELECT template_body FROM notification.templates
                 WHERE id = %s
                 """
-            data = [template_id, ]
+            data = [
+                template_id,
+            ]
             cursor.execute(stmt, data)
             template = cursor.fetchone()
             return template

@@ -46,15 +46,22 @@
 <span id="L36" class="lineno"><a class="lineno" href="#L36">36</a></span>
 <span id="L37" class="lineno"><a class="lineno" href="#L37">37</a></span>
 <span id="L38" class="lineno"><a class="lineno" href="#L38">38</a></span>
+<span id="L39" class="lineno"><a class="lineno" href="#L39">39</a></span>
+<span id="L40" class="lineno"><a class="lineno" href="#L40">40</a></span>
 </pre></td>
-<td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">import uvicorn</span>
+<td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">import logging</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="No Anys on this line!">import uvicorn</span>
 <span class="line-precise" title="No Anys on this line!">from fastapi import FastAPI</span>
 <span class="line-precise" title="No Anys on this line!">from fastapi.responses import ORJSONResponse</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="No Anys on this line!">from api.v1 import events, admin, core</span>
+<span class="line-any" title="No Anys on this line!">from api.v1 import events, mass_mailing, core</span>
 <span class="line-any" title="No Anys on this line!">from core.config import project_settings</span>
 <span class="line-any" title="No Anys on this line!">from core.logger import LOGGER_CONFIG</span>
 <span class="line-any" title="No Anys on this line!">from services import amqp_broker_service</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="No Anys on this line!">logging.basicConfig(level=logging.INFO)</span>
+<span class="line-precise" title="No Anys on this line!">logger = logging.getLogger(__name__)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="Any Types on this line: 
 Explicit (x13)">app = FastAPI(</span>
@@ -74,13 +81,15 @@ Explicit (x1)
 Unimported (x2)">app.include_router(events.router, prefix="/api/v1/events", tags=["События"])</span>
 <span class="line-any" title="Any Types on this line: 
 Explicit (x1)
-Unimported (x2)">app.include_router(admin.router, prefix="/api/v1/admin", tags=["Панель администратора"])</span>
+Unimported (x2)">app.include_router(mass_mailing.router, prefix="/api/v1/mass", tags=["Массовая рассылка"])</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="Any Types on this line: 
 Explicit (x12)
 Omitted Generics (x4)">@app.on_event("startup")</span>
 <span class="line-any" title="No Anys on this line!">async def startup():</span>
+<span class="line-any" title="Any Types on this line: 
+Unannotated (x2)">    logger.info("startup")</span>
 <span class="line-any" title="Any Types on this line: 
 Unannotated (x2)
 Unimported (x1)">    await amqp_broker_service.connect()</span>
@@ -91,20 +100,17 @@ Explicit (x12)
 Omitted Generics (x4)">@app.on_event("shutdown")</span>
 <span class="line-any" title="No Anys on this line!">async def shutdown():</span>
 <span class="line-any" title="Any Types on this line: 
+Unannotated (x2)">    logger.info("shutdown")</span>
+<span class="line-any" title="Any Types on this line: 
 Unannotated (x2)
 Unimported (x1)">    await amqp_broker_service.disconnect()</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">if __name__ == "__main__":</span>
-<span class="line-imprecise" title="Any Types on this line: 
-Explicit (x4)
-Omitted Generics (x5)">    uvicorn.run(</span>
-<span class="line-precise" title="No Anys on this line!">        "main:app",</span>
-<span class="line-precise" title="No Anys on this line!">        host="0.0.0.0",</span>
-<span class="line-precise" title="No Anys on this line!">        port=8000,</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x1)">        log_config=LOGGER_CONFIG,</span>
-<span class="line-empty" title="No Anys on this line!">    )</span>
+Explicit (x4)
+Omitted Generics (x5)
+Unimported (x1)">    uvicorn.run("main:app", host="0.0.0.0", port=8001, log_config=LOGGER_CONFIG)</span>
 </pre></td>
 </tr></tbody>
 </table>

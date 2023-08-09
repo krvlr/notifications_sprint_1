@@ -63,6 +63,8 @@
 <span id="L53" class="lineno"><a class="lineno" href="#L53">53</a></span>
 <span id="L54" class="lineno"><a class="lineno" href="#L54">54</a></span>
 <span id="L55" class="lineno"><a class="lineno" href="#L55">55</a></span>
+<span id="L56" class="lineno"><a class="lineno" href="#L56">56</a></span>
+<span id="L57" class="lineno"><a class="lineno" href="#L57">57</a></span>
 </pre></td>
 <td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">import uuid</span>
 <span class="line-precise" title="No Anys on this line!">from contextlib import contextmanager</span>
@@ -108,21 +110,21 @@ Unimported (x3)">        connection_.close()</span>
 Explicit (x20)
 Omitted Generics (x4)">    @backoff.on_exception(wait_gen=backoff.expo, exception=Exception)</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x1)">    def get_pending_notifications(self) -&gt; DictRow:</span>
+Unimported (x1)">    def get_notifications(self) -&gt; DictRow:</span>
 <span class="line-empty" title="No Anys on this line!">        """Возвращает список рассылок с датой меньше или равной текущей"""</span>
-<span class="line-precise" title="No Anys on this line!">        query = (</span>
-<span class="line-precise" title="No Anys on this line!">            "SELECT ns.id, ns.next_planned_date, ns.periodicity, "</span>
-<span class="line-empty" title="No Anys on this line!">            "ns.user_group, ns.template_id, nt.subject, nt.channel, "</span>
-<span class="line-empty" title="No Anys on this line!">            "ns.priority FROM notifications_scheduledmailing AS ns "</span>
-<span class="line-empty" title="No Anys on this line!">            "JOIN notifications_template AS nt "</span>
-<span class="line-empty" title="No Anys on this line!">            "ON ns.template_id = nt.id WHERE next_planned_date &lt;= %s"</span>
-<span class="line-empty" title="No Anys on this line!">        )</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x3)">        with self.conn_context() as conn:</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x4)">            with conn.cursor() as curs:</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x3)">                curs.execute(query, (datetime.now(),))</span>
+Unimported (x3)">                curs.execute(</span>
+<span class="line-precise" title="No Anys on this line!">                    "SELECT schedules.id, schedules.planned_date, schedules.group, "</span>
+<span class="line-empty" title="No Anys on this line!">                    "schedules.template_id, schedules.priority as message_priority, "</span>
+<span class="line-empty" title="No Anys on this line!">                    "schedules.timing, templates.transport_type "</span>
+<span class="line-empty" title="No Anys on this line!">                    "FROM notification.schedules JOIN notification.templates "</span>
+<span class="line-empty" title="No Anys on this line!">                    "ON schedules.template_id = templates.id WHERE schedules.planned_date &lt;= %s",</span>
+<span class="line-precise" title="No Anys on this line!">                    (datetime.now(),),</span>
+<span class="line-empty" title="No Anys on this line!">                )</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x5)">                while row := curs.fetchone():</span>
 <span class="line-any" title="Any Types on this line: 
@@ -132,19 +134,21 @@ Unimported (x1)">                    yield row</span>
 Explicit (x20)
 Omitted Generics (x4)">    @backoff.on_exception(wait_gen=backoff.expo, exception=Exception)</span>
 <span class="line-any" title="Any Types on this line: 
-Unannotated (x1)">    def update_processed_notifications(</span>
+Unannotated (x1)">    def update_mailing_date(</span>
 <span class="line-empty" title="No Anys on this line!">        self,</span>
 <span class="line-empty" title="No Anys on this line!">        notification_id: uuid.UUID,</span>
-<span class="line-empty" title="No Anys on this line!">        next_date: datetime,</span>
+<span class="line-empty" title="No Anys on this line!">        planned_date: datetime,</span>
 <span class="line-empty" title="No Anys on this line!">    ):</span>
-<span class="line-empty" title="No Anys on this line!">        """Обновляет запланированную дату рассылки после отправки в очередь"""</span>
-<span class="line-precise" title="No Anys on this line!">        query = "UPDATE notifications_scheduledmailing " + "SET next_planned_date = %s WHERE id = %s"</span>
+<span class="line-empty" title="No Anys on this line!">        """Обновляет дату рассылки после отправки в очередь"""</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x3)">        with self.conn_context() as conn:</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x4)">            with conn.cursor() as curs:</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x3)">                curs.execute(query, (str(next_date), str(notification_id)))</span>
+Unimported (x3)">                curs.execute(</span>
+<span class="line-precise" title="No Anys on this line!">                    "UPDATE notification.schedules SET planned_date = %s WHERE id = %s",</span>
+<span class="line-precise" title="No Anys on this line!">                    (planned_date, str(notification_id)),</span>
+<span class="line-empty" title="No Anys on this line!">                )</span>
 </pre></td>
 </tr></tbody>
 </table>

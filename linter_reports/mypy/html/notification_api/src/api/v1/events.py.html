@@ -50,6 +50,7 @@
 <span id="L40" class="lineno"><a class="lineno" href="#L40">40</a></span>
 <span id="L41" class="lineno"><a class="lineno" href="#L41">41</a></span>
 <span id="L42" class="lineno"><a class="lineno" href="#L42">42</a></span>
+<span id="L43" class="lineno"><a class="lineno" href="#L43">43</a></span>
 </pre></td>
 <td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">from http import HTTPStatus</span>
 <span class="line-empty" title="No Anys on this line!"></span>
@@ -76,20 +77,18 @@ Explicit (x5)
 Unimported (x1)">    amqp_broker: AmqpBroker = Depends(get_amqp_broker),</span>
 <span class="line-empty" title="No Anys on this line!">) -&gt; Response:</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x3)">    message = WorkerMessage(</span>
-<span class="line-any" title="Any Types on this line: 
-Unimported (x2)">        delivery_type=review_rating_event.delivery_type,</span>
-<span class="line-any" title="Any Types on this line: 
-Unimported (x2)">        event=Event.REVIEW_RATED,</span>
-<span class="line-any" title="Any Types on this line: 
-Unimported (x2)">        body=review_rating_event.body,</span>
-<span class="line-empty" title="No Anys on this line!">    )</span>
-<span class="line-any" title="Any Types on this line: 
 Unimported (x3)">    await amqp_broker.post(</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x2)">        priority=review_rating_event.message_priority,</span>
+Unimported (x2)">        message_priority=review_rating_event.message_priority,</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x1)">        message=message,</span>
+Unimported (x2)">        message=WorkerMessage(</span>
+<span class="line-any" title="Any Types on this line: 
+Unimported (x2)">            transport_type=review_rating_event.transport_type,</span>
+<span class="line-any" title="Any Types on this line: 
+Unimported (x2)">            event=Event.REVIEW_RATED,</span>
+<span class="line-any" title="Any Types on this line: 
+Unimported (x2)">            body=review_rating_event.body,</span>
+<span class="line-empty" title="No Anys on this line!">        ),</span>
 <span class="line-empty" title="No Anys on this line!">    )</span>
 <span class="line-precise" title="Any Types on this line: 
 Explicit (x1)">    return Response(status_code=HTTPStatus.OK)</span>
@@ -106,16 +105,19 @@ Explicit (x5)
 Unimported (x1)">    amqp_broker: AmqpBroker = Depends(get_amqp_broker),</span>
 <span class="line-empty" title="No Anys on this line!">) -&gt; Response:</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x3)">    message = WorkerMessage(</span>
+Unimported (x3)">    await amqp_broker.post(</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x2)">        delivery_type=user_event.delivery_type,</span>
+Unimported (x2)">        message_priority=user_event.message_priority,</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x2)">        event=Event.USER_REGISTERED,</span>
+Unimported (x2)">        message=WorkerMessage(</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x2)">        body=user_event.body,</span>
+Unimported (x2)">            transport_type=user_event.transport_type,</span>
+<span class="line-any" title="Any Types on this line: 
+Unimported (x2)">            event=Event.USER_REGISTERED,</span>
+<span class="line-any" title="Any Types on this line: 
+Unimported (x2)">            body=user_event.body,</span>
+<span class="line-empty" title="No Anys on this line!">        ),</span>
 <span class="line-empty" title="No Anys on this line!">    )</span>
-<span class="line-any" title="Any Types on this line: 
-Unimported (x6)">    await amqp_broker.post(priority=user_event.message_priority, message=message)</span>
 <span class="line-precise" title="Any Types on this line: 
 Explicit (x1)">    return Response(status_code=HTTPStatus.OK)</span>
 </pre></td>

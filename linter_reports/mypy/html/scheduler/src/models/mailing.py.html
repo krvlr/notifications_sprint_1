@@ -40,7 +40,6 @@
 <span id="L30" class="lineno"><a class="lineno" href="#L30">30</a></span>
 <span id="L31" class="lineno"><a class="lineno" href="#L31">31</a></span>
 <span id="L32" class="lineno"><a class="lineno" href="#L32">32</a></span>
-<span id="L33" class="lineno"><a class="lineno" href="#L33">33</a></span>
 </pre></td>
 <td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">import uuid</span>
 <span class="line-precise" title="No Anys on this line!">from datetime import datetime</span>
@@ -49,32 +48,31 @@
 <span class="line-precise" title="No Anys on this line!">from pydantic import BaseModel</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-precise" title="No Anys on this line!">class Periodicity(Enum):</span>
-<span class="line-precise" title="No Anys on this line!">    once = "once"</span>
-<span class="line-precise" title="No Anys on this line!">    daily = "daily"</span>
-<span class="line-precise" title="No Anys on this line!">    weekly = "weekly"</span>
-<span class="line-precise" title="No Anys on this line!">    monthly = "monthly"</span>
+<span class="line-precise" title="No Anys on this line!">class Timing(Enum):</span>
+<span class="line-precise" title="No Anys on this line!">    ONE = "one"</span>
+<span class="line-precise" title="No Anys on this line!">    WEEK = "week"</span>
+<span class="line-precise" title="No Anys on this line!">    MONTH = "month"</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">class TransportType(Enum):</span>
-<span class="line-precise" title="No Anys on this line!">    email = "email"</span>
-<span class="line-precise" title="No Anys on this line!">    websocket = "websocket"</span>
+<span class="line-precise" title="No Anys on this line!">    EMAIL = "email"</span>
+<span class="line-precise" title="No Anys on this line!">    WEBSOCKET = "websocket"</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">class MessagePriority(Enum):</span>
 <span class="line-precise" title="No Anys on this line!">    LOW = "low"</span>
+<span class="line-precise" title="No Anys on this line!">    MIDDLE = "middle"</span>
 <span class="line-precise" title="No Anys on this line!">    HIGH = "high"</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-precise" title="No Anys on this line!">class AdminEvent(BaseModel):</span>
+<span class="line-precise" title="No Anys on this line!">class MassMailingEvent(BaseModel):</span>
 <span class="line-precise" title="No Anys on this line!">    id: uuid.UUID</span>
-<span class="line-precise" title="No Anys on this line!">    user_group: str</span>
+<span class="line-precise" title="No Anys on this line!">    planned_date: datetime</span>
+<span class="line-precise" title="No Anys on this line!">    group: str</span>
 <span class="line-precise" title="No Anys on this line!">    template_id: uuid.UUID</span>
-<span class="line-precise" title="No Anys on this line!">    subject: str</span>
-<span class="line-precise" title="No Anys on this line!">    channel: TransportType</span>
-<span class="line-precise" title="No Anys on this line!">    periodicity: Periodicity</span>
-<span class="line-precise" title="No Anys on this line!">    priority: MessagePriority</span>
-<span class="line-precise" title="No Anys on this line!">    next_planned_date: datetime</span>
+<span class="line-precise" title="No Anys on this line!">    message_priority: MessagePriority</span>
+<span class="line-precise" title="No Anys on this line!">    timing: Timing</span>
+<span class="line-precise" title="No Anys on this line!">    transport_type: TransportType</span>
 </pre></td>
 </tr></tbody>
 </table>

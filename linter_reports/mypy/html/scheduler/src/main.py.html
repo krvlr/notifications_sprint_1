@@ -61,6 +61,10 @@
 <span id="L51" class="lineno"><a class="lineno" href="#L51">51</a></span>
 <span id="L52" class="lineno"><a class="lineno" href="#L52">52</a></span>
 <span id="L53" class="lineno"><a class="lineno" href="#L53">53</a></span>
+<span id="L54" class="lineno"><a class="lineno" href="#L54">54</a></span>
+<span id="L55" class="lineno"><a class="lineno" href="#L55">55</a></span>
+<span id="L56" class="lineno"><a class="lineno" href="#L56">56</a></span>
+<span id="L57" class="lineno"><a class="lineno" href="#L57">57</a></span>
 </pre></td>
 <td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">import http</span>
 <span class="line-precise" title="No Anys on this line!">import logging</span>
@@ -69,74 +73,77 @@
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">from dateutil.relativedelta import relativedelta</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-any" title="No Anys on this line!">from delivery_api_client import DeliveryApiClient</span>
-<span class="line-any" title="No Anys on this line!">from models.mailing import AdminEvent, Periodicity</span>
+<span class="line-any" title="No Anys on this line!">from api_client import ApiClient</span>
 <span class="line-any" title="No Anys on this line!">from db.postgresql import PostgresStorage</span>
+<span class="line-any" title="No Anys on this line!">from models.mailing import MassMailingEvent, Timing</span>
 <span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="No Anys on this line!">logging.basicConfig(level=logging.INFO)</span>
 <span class="line-precise" title="No Anys on this line!">logger = logging.getLogger(__name__)</span>
-<span class="line-precise" title="No Anys on this line!">logger.setLevel(logging.INFO)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-precise" title="No Anys on this line!">def get_next_date(current_planed_date: datetime, periodicity: str) -&gt; datetime | None:</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x4)">    if periodicity == Periodicity.once.value:</span>
+Unimported (x1)">def get_next_date(current_planed_date: datetime, timing: Timing) -&gt; datetime | None:</span>
+<span class="line-any" title="Any Types on this line: 
+Unimported (x4)">    if timing == Timing.ONE:</span>
 <span class="line-precise" title="No Anys on this line!">        return None</span>
-<span class="line-imprecise" title="Any Types on this line: 
-Unimported (x1)">    mapping = {</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x3)">        Periodicity.daily.value: "days",</span>
+Unimported (x5)">    timing_relativedelta_mapping = {Timing.WEEK: "weeks", Timing.MONTH: "months"}</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x3)">        Periodicity.weekly.value: "weeks",</span>
-<span class="line-any" title="Any Types on this line: 
-Unimported (x3)">        Periodicity.monthly.value: "months",</span>
-<span class="line-empty" title="No Anys on this line!">    }</span>
-<span class="line-imprecise" title="Any Types on this line: 
-Unimported (x1)">    return current_planed_date + relativedelta(**{mapping[periodicity]: 1})  # type: ignore</span>
+Unimported (x2)">    return current_planed_date + relativedelta(**{timing_relativedelta_mapping[timing]: 1})  # type: ignore</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x3)">storage = PostgresStorage()</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x3)">api_client = DeliveryApiClient()</span>
+Unimported (x3)">api_client = ApiClient()</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">if __name__ == "__main__":</span>
+<span class="line-precise" title="No Anys on this line!">    logger.info("Scheduler starting")</span>
+<span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">    while True:</span>
-<span class="line-any" title="Any Types on this line: 
-Unimported (x4)">        admin_events = storage.get_pending_notifications()</span>
+<span class="line-precise" title="No Anys on this line!">        time.sleep(1)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x2)">        for event in admin_events:</span>
+Unimported (x4)">        mass_mailing_events = storage.get_notifications()</span>
+<span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x4)">            admin_event = AdminEvent(**event)</span>
-<span class="line-precise" title="No Anys on this line!">            next_date = get_next_date(</span>
+Unimported (x2)">        for event in mass_mailing_events:</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x2)">                admin_event.next_planned_date,</span>
+Unimported (x4)">            mass_mailing_event = MassMailingEvent(**event)</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="No Anys on this line!">            logger.info(</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x3)">                admin_event.periodicity.value,</span>
+Unimported (x3)">                f"Process message for mass mailing {mass_mailing_event.model_json_schema()}"</span>
 <span class="line-empty" title="No Anys on this line!">            )</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x4)">            response = api_client.send(</span>
+Unimported (x1)">            next_date = get_next_date(</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x3)">                delivery_type=admin_event.channel.value,</span>
+Unimported (x2)">                mass_mailing_event.planned_date,</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x2)">                cohort=admin_event.user_group,</span>
-<span class="line-any" title="Any Types on this line: 
-Unimported (x2)">                template_id=admin_event.template_id,</span>
-<span class="line-any" title="Any Types on this line: 
-Unimported (x2)">                subject=admin_event.subject,</span>
-<span class="line-any" title="Any Types on this line: 
-Unimported (x3)">                priority=admin_event.priority.value,</span>
+Unimported (x2)">                mass_mailing_event.timing,</span>
 <span class="line-empty" title="No Anys on this line!">            )</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-any" title="Any Types on this line: 
+Unimported (x4)">            response = api_client.post_mass_mailing(</span>
+<span class="line-any" title="Any Types on this line: 
+Unimported (x3)">                transport_type=mass_mailing_event.transport_type.value,</span>
+<span class="line-any" title="Any Types on this line: 
+Unimported (x2)">                cohort=mass_mailing_event.group,</span>
+<span class="line-any" title="Any Types on this line: 
+Unimported (x2)">                template_id=mass_mailing_event.template_id,</span>
+<span class="line-any" title="Any Types on this line: 
+Unimported (x3)">                message_priority=mass_mailing_event.message_priority.value,</span>
+<span class="line-empty" title="No Anys on this line!">            )</span>
+<span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x3)">            if response.status_code == http.HTTPStatus.OK:</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x3)">                storage.update_processed_notifications(</span>
+Unimported (x3)">                storage.update_mailing_date(</span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x2)">                    admin_event.id,</span>
+Unimported (x2)">                    mass_mailing_event.id,</span>
 <span class="line-precise" title="No Anys on this line!">                    next_date,</span>
 <span class="line-empty" title="No Anys on this line!">                )</span>
-<span class="line-precise" title="No Anys on this line!">            time.sleep(1)</span>
 </pre></td>
 </tr></tbody>
 </table>

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Extra
 from typing import Optional
 
 
@@ -7,11 +7,17 @@ class Body(BaseModel):
     created_at: Optional[str] = None
     updated_at: Optional[str] = None
 
+    class Config:
+        extra = Extra.allow
+
 
 class Message(BaseModel):
-    delivery_type: str
+    transport_type: str
     event: str
     body: Body
+
+    class Config:
+        extra = Extra.allow
 
 
 class WSMessage(BaseModel):

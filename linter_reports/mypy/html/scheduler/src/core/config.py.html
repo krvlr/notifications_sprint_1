@@ -32,20 +32,22 @@
 <span id="L22" class="lineno"><a class="lineno" href="#L22">22</a></span>
 <span id="L23" class="lineno"><a class="lineno" href="#L23">23</a></span>
 <span id="L24" class="lineno"><a class="lineno" href="#L24">24</a></span>
+<span id="L25" class="lineno"><a class="lineno" href="#L25">25</a></span>
 </pre></td>
-<td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">from pydantic import Field</span>
+<td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">from pydantic import Field, Extra</span>
 <span class="line-precise" title="No Anys on this line!">from pydantic_settings import BaseSettings</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">class BaseConfig(BaseSettings):</span>
 <span class="line-precise" title="No Anys on this line!">    class Config:</span>
+<span class="line-precise" title="No Anys on this line!">        extra = Extra.ignore</span>
 <span class="line-precise" title="No Anys on this line!">        env_file = ".env"</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">class ApiSettings(BaseConfig):</span>
 <span class="line-any" title="Any Types on this line: 
 Explicit (x7)
-Error (x1)">    host: str = Field(default="localhost", env="NOTIFICATION_API_HOST")</span>
+Error (x1)">    host: str = Field(default="api-notification", env="NOTIFICATION_API_HOST")</span>
 <span class="line-any" title="Any Types on this line: 
 Explicit (x7)
 Error (x1)">    port: int = Field(default=8000, env="NOTIFICATION_API_PORT")</span>
@@ -60,13 +62,13 @@ Explicit (x7)
 Error (x1)">    password: str = Field(default="db_password", env="DB_PASSWORD")</span>
 <span class="line-any" title="Any Types on this line: 
 Explicit (x7)
-Error (x1)">    host: str = Field(default="127.0.0.1", env="DB_HOST")</span>
+Error (x1)">    host: str = Field(default="notification_db", env="DB_HOST")</span>
 <span class="line-any" title="Any Types on this line: 
 Explicit (x7)
 Error (x1)">    port: int = Field(default=5432, env="DB_PORT")</span>
 <span class="line-any" title="Any Types on this line: 
 Explicit (x7)
-Error (x1)">    dbname: str = Field(default="postgres", env="DB_NAME")</span>
+Error (x1)">    dbname: str = Field(default="db_name", env="DB_NAME")</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">api_settings = ApiSettings()</span>
