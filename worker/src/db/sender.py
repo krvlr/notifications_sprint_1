@@ -3,6 +3,8 @@ import logging
 import os
 import smtplib
 from abc import ABC, abstractmethod
+
+import backoff
 from typing import Any
 
 from core.config import worker_settings
@@ -106,6 +108,7 @@ class SenderEmailMailhog(SenderBase):
             logger.info(f"Mailhog {self.host} {str(self.port)}")
             self.server = smtplib.SMTP(self.host, self.port)
 
+    @backoff.on_exception(backoff.expo, exception=(smtplib.SMTPException))
     async def send_message(self, message: Any) -> None:
         output, subject = MessageGenerator.generate_welcome_mail(message)
 
@@ -124,9 +127,10 @@ class SenderEmailMailhog(SenderBase):
                 self.server.sendmail(self.from_email, receivers, email_message.as_string())
         except smtplib.SMTPException as exc:
             reason = f"{type(exc).__name__}: {exc}"
-            print(f"Не удалось отправить письмо. {reason}")
+            logger.info(f"Не удалось отправить письмо. {reason}. Попытка повторной отправки")
+            raise exc
         else:
-            print("Письмо отправлено!")
+            logger.info("Письмо отправлено!")
 
 
 class SenderEmailSendgrid(SenderBase):
@@ -139,6 +143,7 @@ class SenderEmailSendgrid(SenderBase):
         if self.sg is None:
             self.sg = SendGridAPIClient(worker_settings.sendgrid_key)
 
+    @backoff.on_exception(backoff.expo, exception=(smtplib.SMTPException))
     async def send_message(self, mess: Message) -> None:
         current_path = os.path.dirname(__file__)
         loader = FileSystemLoader(current_path)
@@ -159,15 +164,20 @@ class SenderEmailSendgrid(SenderBase):
         }
         output = template.render(**data)
 
-        message = Mail(from_email=self.from_email, to_emails=to_email, subject=subject, html_content=output)
+        message = Mail(
+            from_email=self.from_email, to_emails=to_email, subject=subject, html_content=output
+        )
         try:
             if self.sg:
                 self.sg.post_mass_mailing(message)
         except smtplib.SMTPException as exc:
             reason = f"{type(exc).__name__}: {exc}"
-            print(f"Не удалось отправить письмо Sendgrid. {reason}")
+            logger.info(
+                f"Не удалось отправить письмо Sendgrid. {reason}. Попытка повторной отправки"
+            )
+            raise exc
         else:
-            print("Письмо отправлено Sendgrid!")
+            logger.info("Письмо отправлено Sendgrid!")
 
 
 class SenderWebsocket(SenderBase):

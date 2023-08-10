@@ -58,8 +58,15 @@
 <span id="L48" class="lineno"><a class="lineno" href="#L48">48</a></span>
 <span id="L49" class="lineno"><a class="lineno" href="#L49">49</a></span>
 <span id="L50" class="lineno"><a class="lineno" href="#L50">50</a></span>
+<span id="L51" class="lineno"><a class="lineno" href="#L51">51</a></span>
+<span id="L52" class="lineno"><a class="lineno" href="#L52">52</a></span>
+<span id="L53" class="lineno"><a class="lineno" href="#L53">53</a></span>
+<span id="L54" class="lineno"><a class="lineno" href="#L54">54</a></span>
+<span id="L55" class="lineno"><a class="lineno" href="#L55">55</a></span>
+<span id="L56" class="lineno"><a class="lineno" href="#L56">56</a></span>
 </pre></td>
-<td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">import os</span>
+<td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">import json</span>
+<span class="line-precise" title="No Anys on this line!">import os</span>
 <span class="line-precise" title="No Anys on this line!">from pathlib import Path</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">from dotenv import load_dotenv</span>
@@ -88,7 +95,14 @@ Omitted Generics (x2)">SECRET_KEY = os.environ.get("SECRET_KEY", "1")</span>
 <span class="line-precise" title="Any Types on this line: 
 Omitted Generics (x2)">DEBUG = os.environ.get("DEBUG", False) == "True"</span>
 <span class="line-empty" title="No Anys on this line!"></span>
-<span class="line-precise" title="No Anys on this line!">CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:8080", "http://127.0.0.1:80", "http://127.0.0.1:8000"]</span>
+<span class="line-any" title="Any Types on this line: 
+Explicit (x13)">CORS_ALLOWED_ORIGINS = json.loads(</span>
+<span class="line-precise" title="Any Types on this line: 
+Omitted Generics (x2)">    os.environ.get(</span>
+<span class="line-precise" title="No Anys on this line!">        "CORS_ALLOWED_ORIGINS",</span>
+<span class="line-precise" title="No Anys on this line!">        '["http://127.0.0.1:8080", "http://127.0.0.1:80", "http://127.0.0.1:8000"]',</span>
+<span class="line-empty" title="No Anys on this line!">    )</span>
+<span class="line-empty" title="No Anys on this line!">)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">ROOT_URLCONF = "config.urls"</span>
 <span class="line-empty" title="No Anys on this line!"></span>

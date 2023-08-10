@@ -65,11 +65,17 @@
 <span id="L55" class="lineno"><a class="lineno" href="#L55">55</a></span>
 <span id="L56" class="lineno"><a class="lineno" href="#L56">56</a></span>
 <span id="L57" class="lineno"><a class="lineno" href="#L57">57</a></span>
+<span id="L58" class="lineno"><a class="lineno" href="#L58">58</a></span>
+<span id="L59" class="lineno"><a class="lineno" href="#L59">59</a></span>
+<span id="L60" class="lineno"><a class="lineno" href="#L60">60</a></span>
+<span id="L61" class="lineno"><a class="lineno" href="#L61">61</a></span>
+<span id="L62" class="lineno"><a class="lineno" href="#L62">62</a></span>
 </pre></td>
 <td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">import logging</span>
 <span class="line-precise" title="No Anys on this line!">import os</span>
 <span class="line-precise" title="No Anys on this line!">import smtplib</span>
 <span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="No Anys on this line!">import backoff</span>
 <span class="line-any" title="No Anys on this line!">from sendgrid import SendGridAPIClient</span>
 <span class="line-any" title="No Anys on this line!">from sendgrid.helpers.mail import Mail</span>
 <span class="line-empty" title="No Anys on this line!"></span>
@@ -96,6 +102,9 @@ Unannotated (x1)">        if self.sg is None:</span>
 Unannotated (x3)
 Unimported (x2)">            self.sg = SendGridAPIClient(worker_settings.sendgrid_key)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="Any Types on this line: 
+Explicit (x20)
+Omitted Generics (x4)">    @backoff.on_exception(backoff.expo, exception=(smtplib.SMTPException))</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x1)">    async def send_message(self, mess: Message) -&gt; None:</span>
 <span class="line-precise" title="Any Types on this line: 
@@ -135,9 +144,12 @@ Unimported (x3)">        message = Mail(</span>
 <span class="line-precise" title="No Anys on this line!">        except smtplib.SMTPException as exc:</span>
 <span class="line-precise" title="Any Types on this line: 
 Explicit (x2)">            reason = f"{type(exc).__name__}: {exc}"</span>
-<span class="line-precise" title="No Anys on this line!">            print(f"Не удалось отправить письмо Sendgrid. {reason}")</span>
+<span class="line-precise" title="No Anys on this line!">            logger.info(</span>
+<span class="line-precise" title="No Anys on this line!">                f"Не удалось отправить письмо Sendgrid. {reason}. Попытка повторной отправки"</span>
+<span class="line-empty" title="No Anys on this line!">            )</span>
+<span class="line-precise" title="No Anys on this line!">            raise exc</span>
 <span class="line-empty" title="No Anys on this line!">        else:</span>
-<span class="line-precise" title="No Anys on this line!">            print("Письмо отправлено Sendgrid!")</span>
+<span class="line-precise" title="No Anys on this line!">            logger.info("Письмо отправлено Sendgrid!")</span>
 </pre></td>
 </tr></tbody>
 </table>
