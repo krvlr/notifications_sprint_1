@@ -62,6 +62,7 @@ services:
     container_name: notification_admin
     restart: always
     depends_on:
+      - notification_db
       - api-notification
     volumes:
       - static_value:/opt/app/static/
@@ -79,11 +80,13 @@ services:
     container_name: worker-mail
     restart: always
     depends_on:
+      - notification_rabbitmq
       - api-notification
     env_file:
       - .env
     networks:
       - notification_network
+      - auth_network
     expose:
       - "8000"
     links:
@@ -97,6 +100,11 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
     networks:
       - notification_network
     expose:

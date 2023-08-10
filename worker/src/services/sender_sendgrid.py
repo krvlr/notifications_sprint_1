@@ -2,6 +2,7 @@ import logging
 import os
 import smtplib
 
+import backoff
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
@@ -24,6 +25,7 @@ class SenderEmailSendgrid(SenderBase):
         if self.sg is None:
             self.sg = SendGridAPIClient(worker_settings.sendgrid_key)
 
+    @backoff.on_exception(backoff.expo, exception=(smtplib.SMTPException))
     async def send_message(self, mess: Message) -> None:
         current_path = os.path.dirname(__file__)
         loader = FileSystemLoader(current_path)
@@ -52,6 +54,9 @@ class SenderEmailSendgrid(SenderBase):
                 self.sg.post_mass_mailing(message)
         except smtplib.SMTPException as exc:
             reason = f"{type(exc).__name__}: {exc}"
-            print(f"Не удалось отправить письмо Sendgrid. {reason}")
+            logger.info(
+                f"Не удалось отправить письмо Sendgrid. {reason}. Попытка повторной отправки"
+            )
+            raise exc
         else:
-            print("Письмо отправлено Sendgrid!")
+            logger.info("Письмо отправлено Sendgrid!")

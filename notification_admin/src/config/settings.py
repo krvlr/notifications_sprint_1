@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 
@@ -23,7 +24,12 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "1")
 
 DEBUG = os.environ.get("DEBUG", False) == "True"
 
-CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:8080", "http://127.0.0.1:80", "http://127.0.0.1:8000"]
+CORS_ALLOWED_ORIGINS = json.loads(
+    os.environ.get(
+        "CORS_ALLOWED_ORIGINS",
+        '["http://127.0.0.1:8080", "http://127.0.0.1:80", "http://127.0.0.1:8000"]',
+    )
+)
 
 ROOT_URLCONF = "config.urls"
 

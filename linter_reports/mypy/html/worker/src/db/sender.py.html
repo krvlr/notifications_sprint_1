@@ -195,12 +195,24 @@
 <span id="L185" class="lineno"><a class="lineno" href="#L185">185</a></span>
 <span id="L186" class="lineno"><a class="lineno" href="#L186">186</a></span>
 <span id="L187" class="lineno"><a class="lineno" href="#L187">187</a></span>
+<span id="L188" class="lineno"><a class="lineno" href="#L188">188</a></span>
+<span id="L189" class="lineno"><a class="lineno" href="#L189">189</a></span>
+<span id="L190" class="lineno"><a class="lineno" href="#L190">190</a></span>
+<span id="L191" class="lineno"><a class="lineno" href="#L191">191</a></span>
+<span id="L192" class="lineno"><a class="lineno" href="#L192">192</a></span>
+<span id="L193" class="lineno"><a class="lineno" href="#L193">193</a></span>
+<span id="L194" class="lineno"><a class="lineno" href="#L194">194</a></span>
+<span id="L195" class="lineno"><a class="lineno" href="#L195">195</a></span>
+<span id="L196" class="lineno"><a class="lineno" href="#L196">196</a></span>
+<span id="L197" class="lineno"><a class="lineno" href="#L197">197</a></span>
 </pre></td>
 <td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">import json</span>
 <span class="line-precise" title="No Anys on this line!">import logging</span>
 <span class="line-precise" title="No Anys on this line!">import os</span>
 <span class="line-precise" title="No Anys on this line!">import smtplib</span>
 <span class="line-precise" title="No Anys on this line!">from abc import ABC, abstractmethod</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="No Anys on this line!">import backoff</span>
 <span class="line-precise" title="No Anys on this line!">from typing import Any</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-any" title="No Anys on this line!">from core.config import worker_settings</span>
@@ -343,6 +355,9 @@ Unannotated (x11)">            logger.info(f"Mailhog {self.host} {str(self.port)
 <span class="line-any" title="Any Types on this line: 
 Unannotated (x4)">            self.server = smtplib.SMTP(self.host, self.port)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="Any Types on this line: 
+Explicit (x20)
+Omitted Generics (x4)">    @backoff.on_exception(backoff.expo, exception=(smtplib.SMTPException))</span>
 <span class="line-any" title="Any Types on this line: 
 Explicit (x1)">    async def send_message(self, message: Any) -&gt; None:</span>
 <span class="line-any" title="Any Types on this line: 
@@ -369,9 +384,10 @@ Unannotated (x1)">        email_message.add_alternative(output, subtype="html")<
 <span class="line-precise" title="No Anys on this line!">        except smtplib.SMTPException as exc:</span>
 <span class="line-precise" title="Any Types on this line: 
 Explicit (x2)">            reason = f"{type(exc).__name__}: {exc}"</span>
-<span class="line-precise" title="No Anys on this line!">            print(f"Не удалось отправить письмо. {reason}")</span>
+<span class="line-precise" title="No Anys on this line!">            logger.info(f"Не удалось отправить письмо. {reason}. Попытка повторной отправки")</span>
+<span class="line-precise" title="No Anys on this line!">            raise exc</span>
 <span class="line-empty" title="No Anys on this line!">        else:</span>
-<span class="line-precise" title="No Anys on this line!">            print("Письмо отправлено!")</span>
+<span class="line-precise" title="No Anys on this line!">            logger.info("Письмо отправлено!")</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">class SenderEmailSendgrid(SenderBase):</span>
@@ -388,6 +404,9 @@ Unannotated (x1)">        if self.sg is None:</span>
 Unannotated (x3)
 Unimported (x2)">            self.sg = SendGridAPIClient(worker_settings.sendgrid_key)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="Any Types on this line: 
+Explicit (x20)
+Omitted Generics (x4)">    @backoff.on_exception(backoff.expo, exception=(smtplib.SMTPException))</span>
 <span class="line-any" title="Any Types on this line: 
 Unimported (x1)">    async def send_message(self, mess: Message) -&gt; None:</span>
 <span class="line-precise" title="Any Types on this line: 
@@ -418,16 +437,21 @@ Explicit (x1)">        template = env.get_template("mail.html")</span>
 Explicit (x2)">        output = template.render(**data)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-any" title="Any Types on this line: 
-Unimported (x3)">        message = Mail(from_email=self.from_email, to_emails=to_email, subject=subject, html_content=output)</span>
+Unimported (x3)">        message = Mail(</span>
+<span class="line-precise" title="No Anys on this line!">            from_email=self.from_email, to_emails=to_email, subject=subject, html_content=output</span>
+<span class="line-empty" title="No Anys on this line!">        )</span>
 <span class="line-empty" title="No Anys on this line!">        try:</span>
 <span class="line-precise" title="No Anys on this line!">            if self.sg:</span>
 <span class="line-unanalyzed" title="No Anys on this line!">                self.sg.post_mass_mailing(message)</span>
 <span class="line-precise" title="No Anys on this line!">        except smtplib.SMTPException as exc:</span>
 <span class="line-precise" title="Any Types on this line: 
 Explicit (x2)">            reason = f"{type(exc).__name__}: {exc}"</span>
-<span class="line-precise" title="No Anys on this line!">            print(f"Не удалось отправить письмо Sendgrid. {reason}")</span>
+<span class="line-precise" title="No Anys on this line!">            logger.info(</span>
+<span class="line-precise" title="No Anys on this line!">                f"Не удалось отправить письмо Sendgrid. {reason}. Попытка повторной отправки"</span>
+<span class="line-empty" title="No Anys on this line!">            )</span>
+<span class="line-precise" title="No Anys on this line!">            raise exc</span>
 <span class="line-empty" title="No Anys on this line!">        else:</span>
-<span class="line-precise" title="No Anys on this line!">            print("Письмо отправлено Sendgrid!")</span>
+<span class="line-precise" title="No Anys on this line!">            logger.info("Письмо отправлено Sendgrid!")</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-precise" title="No Anys on this line!">class SenderWebsocket(SenderBase):</span>

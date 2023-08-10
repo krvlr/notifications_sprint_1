@@ -55,10 +55,14 @@
 <span id="L45" class="lineno"><a class="lineno" href="#L45">45</a></span>
 <span id="L46" class="lineno"><a class="lineno" href="#L46">46</a></span>
 <span id="L47" class="lineno"><a class="lineno" href="#L47">47</a></span>
+<span id="L48" class="lineno"><a class="lineno" href="#L48">48</a></span>
+<span id="L49" class="lineno"><a class="lineno" href="#L49">49</a></span>
 </pre></td>
 <td class="table-code"><pre><span class="line-precise" title="No Anys on this line!">import logging</span>
 <span class="line-precise" title="No Anys on this line!">import smtplib</span>
 <span class="line-precise" title="No Anys on this line!">from email.message import EmailMessage</span>
+<span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="No Anys on this line!">import backoff</span>
 <span class="line-precise" title="No Anys on this line!">from typing import Any</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-any" title="No Anys on this line!">from services.mail_generator import MessageGenerator</span>
@@ -85,6 +89,9 @@ Unannotated (x11)">            logger.info(f"Mailhog {self.host} {str(self.port)
 <span class="line-any" title="Any Types on this line: 
 Unannotated (x4)">            self.server = smtplib.SMTP(self.host, self.port)</span>
 <span class="line-empty" title="No Anys on this line!"></span>
+<span class="line-precise" title="Any Types on this line: 
+Explicit (x20)
+Omitted Generics (x4)">    @backoff.on_exception(backoff.expo, exception=(smtplib.SMTPException))</span>
 <span class="line-any" title="Any Types on this line: 
 Explicit (x1)">    async def send_message(self, message: Any) -&gt; None:</span>
 <span class="line-any" title="Any Types on this line: 
@@ -103,9 +110,7 @@ Unimported (x1)">        email_message["Subject"] = f"{subject}!"</span>
 <span class="line-any" title="Any Types on this line: 
 Explicit (x2)
 Unimported (x1)">        email_message.add_alternative(output, subtype="html")</span>
-<span class="line-precise" title="No Anys on this line!">        receivers = [</span>
-<span class="line-precise" title="No Anys on this line!">            to_email,</span>
-<span class="line-empty" title="No Anys on this line!">        ]</span>
+<span class="line-precise" title="No Anys on this line!">        receivers = [to_email]</span>
 <span class="line-empty" title="No Anys on this line!"></span>
 <span class="line-empty" title="No Anys on this line!">        try:</span>
 <span class="line-precise" title="No Anys on this line!">            if self.server:</span>
@@ -113,9 +118,10 @@ Unimported (x1)">        email_message.add_alternative(output, subtype="html")</
 <span class="line-precise" title="No Anys on this line!">        except smtplib.SMTPException as exc:</span>
 <span class="line-precise" title="Any Types on this line: 
 Explicit (x2)">            reason = f"{type(exc).__name__}: {exc}"</span>
-<span class="line-precise" title="No Anys on this line!">            print(f"Не удалось отправить письмо. {reason}")</span>
+<span class="line-precise" title="No Anys on this line!">            logger.info(f"Не удалось отправить письмо. {reason}. Попытка повторной отправки")</span>
+<span class="line-precise" title="No Anys on this line!">            raise exc</span>
 <span class="line-empty" title="No Anys on this line!">        else:</span>
-<span class="line-precise" title="No Anys on this line!">            print("Письмо отправлено!")</span>
+<span class="line-precise" title="No Anys on this line!">            logger.info("Письмо отправлено!")</span>
 </pre></td>
 </tr></tbody>
 </table>

@@ -1,6 +1,7 @@
 from pathlib import Path
 
-from pydantic import BaseSettings, Field, AnyUrl
+from pydantic import Field, AnyUrl
+from pydantic_settings import BaseSettings
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 MIGRATION_DIR = BASE_DIR / "db" / "migrations"
@@ -13,9 +14,7 @@ class BaseConfig(BaseSettings):
 
 class LoggerSettings(BaseConfig):
     level: str = Field(default="INFO", env="LOGGING_LEVEL")
-    format: str = Field(
-        default="%(asctime)s - %(name)s - %(levelname)s - %(message)s", env="LOG_FORMAT"
-    )
+    format: str = Field(default="%(asctime)s - %(name)s - %(levelname)s - %(message)s", env="LOG_FORMAT")
     default_handlers: list = ["console"]
 
 
@@ -28,7 +27,7 @@ class CommonSettings(BaseConfig):
 
 
 class PostgreSettings(BaseConfig):
-    host: str = Field(default="127.0.0.1", env="AUTH_DB_HOST")
+    host: str = Field(default="db-auth", env="AUTH_DB_HOST")
     port: str = Field(default="5432", env="AUTH_DB_PORT")
     name: str = Field(default="auth_database", env="AUTH_DB_NAME")
     user: str = Field(default="admin", env="AUTH_DB_USER")
@@ -39,7 +38,7 @@ class PostgreSettings(BaseConfig):
 
 
 class RedisSettings(BaseConfig):
-    host: str = Field(default="127.0.0.1", env="AUTH_REDIS_HOST")
+    host: str = Field(default="redis-auth", env="AUTH_REDIS_HOST")
     port: str = Field(default="6379", env="AUTH_REDIS_PORT")
 
 

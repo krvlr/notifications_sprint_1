@@ -25,7 +25,6 @@ async def create_consumers(
 
     for routing_key in worker_settings.routing_keys:
         queue = await get_queue(connection, routing_key)
-        print(routing_key)
         if worker_settings.sender_type == "Email":
             if worker_settings.using_mailhog:
                 sender = SenderEmailMailhog(

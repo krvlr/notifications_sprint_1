@@ -2,7 +2,7 @@ fastapi==0.100.1
 orjson==3.9.2
 pydantic==2.1.1
 pydantic-settings==2.0.2
-aio-pika==9.2.0
+aio-pika==9.2.1
 backoff==2.2.1
 httptools==0.6.0
 uvicorn==0.23.2

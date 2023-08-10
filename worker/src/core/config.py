@@ -8,7 +8,7 @@ from pydantic_settings import BaseSettings
 class PostgresSettings(BaseSettings):
     dbname: str = Field(default="db_name", env="DB_NAME")
     user: str = Field(default="db_user", env="DB_USER")
-    password: str = Field(default="db_password", env="DB_PASSWORD")
+    password: str = Field(default="db_password", env="DB_PASSWORD", repr=False)
     host: str = Field(default="notification_db", env="DB_HOST")
     port: int = Field(default=5432, env="DB_PORT")
 
@@ -20,7 +20,7 @@ class PostgresSettings(BaseSettings):
 
 class WorkerSettings(BaseSettings):
     rabbit_user: str = Field(default="guest", env="RABBITMQ_USER")
-    rabbit_password: str = Field(default="guest", env="RABBITMQ_PASS")
+    rabbit_password: str = Field(default="guest", env="RABBITMQ_PASS", repr=False)
 
     rabbit_host: str = Field(default="notification_rabbitmq", env="RABBITMQ_HOST")
     rabbit_port: int = Field(default=5672, env="RABBITMQ_PORT")
